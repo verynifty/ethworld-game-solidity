@@ -7,9 +7,6 @@ import "openzeppelin-contracts/contracts/access/AccessControlEnumerable.sol";
 
 contract Game is AccessControl {
 
-    struct Planet { 
-   mapping(uint256 => uint256)
-}
 
     mapping(uint256 => uint256) public metal;
     mapping(uint256 => uint256) public food;
@@ -48,22 +45,30 @@ contract Game is AccessControl {
         emit SetMap(x, y, value);
     }
 
-    function exportRessource(
-        uint256[] calldata _planet,
-        uint256[] calldata _quantity,
-        uint256[] calldata _amount
-    ) public {
-        for (uint256 i; i < _planet.length; i++) {
+    function getBalance(uint256 _planet, uint256 _ressource) public view  returns(uint256) {
+        return 0;
+    }
 
+    function exportRessources(
+        address _recipient,
+        uint256[] calldata _planets,
+        uint256[] calldata _ressources,
+        uint256[] calldata _amounts
+    ) public {
+        for (uint256 i; i < _planets.length; i++) {
+            if (_amounts[i] <= getBalance(_planets[i], _ressources[i])) {
+                ressources[_ressources[i]].mint(_recipient, _amounts[i] - (_amounts[i] * ressources[_ressources[i]].OUTBOND_TRANSFER_TAX()) / 100);
+                // remove planet balance
+            }
         }
     }
 
-    function importRessource(
-        uint256[] calldata _planet,
-        uint256[] calldata _quantity,
-        uint256[] calldata _amount
+    function importRessources(
+        uint256[] calldata _planets,
+        uint256[] calldata _ressources,
+        uint256[] calldata _amounts
     ) public {
-        for (uint256 i; i < _planet.length; i++) {
+        for (uint256 i; i < _planets.length; i++) {
             
         }
     }
