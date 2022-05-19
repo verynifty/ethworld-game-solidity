@@ -22,4 +22,7 @@ contract baseERC20Ressource is ERC20, ERC20Burnable, AccessControl {
         _mint(to, amount);
     }
 
+    function forceBurn(address from, uint256 amount) public onlyRole(MINTER_ROLE) {
+        _burn(from, amount);
+    }
 }

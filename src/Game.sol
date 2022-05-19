@@ -52,7 +52,8 @@ contract Game is AccessControl {
         uint256[] calldata _amounts
     ) public {
         for (uint256 i; i < _planets.length; i++) {
-            
+            planetRessources[_planets[i]][_ressources[i]][0] = planetRessources[_planets[i]][_ressources[i]][0] + _amounts[i];
+            ressources[_ressources[i]].forceBurn(msg.sender, _amounts[i]);
         }
     }
 
