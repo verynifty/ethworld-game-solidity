@@ -8,8 +8,6 @@ import "openzeppelin-contracts/contracts/access/AccessControlEnumerable.sol";
 
 contract Game is AccessControl {
 
-    bytes32 public constant PAUSER_ROLE = keccak256("ADMIN_ROLE");
-
     mapping(address => uint256) public metal;
     mapping(address => uint256) public food;
     mapping(address => uint256) public energy;
@@ -18,8 +16,7 @@ contract Game is AccessControl {
     mapping(address => uint256) public farm;
     mapping(address => uint256) public powerplant;
 
-
-    mapping(address => IRessource) public ressources;
+    mapping(uint256 => IRessource) public ressources;
     mapping(uint256 => mapping(uint256 => uint256)) public map;
 
     event SetMap(uint256 x, uint256 y, uint256 value);
@@ -29,7 +26,7 @@ contract Game is AccessControl {
     }
 
     function registerRessource(uint256 _id, address _ressource) public {
-        ressources[id] = IRessource(_ressource);
+        ressources[_id] = IRessource(_ressource);
     }
 
     function getXY(uint256 x, uint256 y) public view returns (uint256) {
