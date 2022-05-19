@@ -7,19 +7,9 @@ import "openzeppelin-contracts/contracts/access/AccessControlEnumerable.sol";
 
 contract Game is AccessControl {
 
-
-    mapping(uint256 => uint256) public metal;
-    mapping(uint256 => uint256) public food;
-    mapping(uint256 => uint256) public crystal;
-    mapping(uint256 => uint256) public energy;
-    mapping(uint256 => uint256) public coin;
-
-    mapping(address => uint256) public mine;
-    mapping(address => uint256) public farm;
-    mapping(address => uint256) public powerplant;
-
     mapping(uint256 => baseERC20Ressource) public ressources;
-    mapping(uint256 => mapping(uint256 => uint256)) public map;
+    // balance / ressourcepersec / bonusmultiplier /lasttimeupdated
+    mapping(uint256 => mapping(uint256 => uint256[4])) public planetRessources;
 
     event SetMap(uint256 x, uint256 y, uint256 value);
 
@@ -31,22 +21,15 @@ contract Game is AccessControl {
         ressources[_id] = baseERC20Ressource(_ressource);
     }
 
-    function getXY(uint256 x, uint256 y) public view returns (uint256) {
-        return map[x][y];
-    }
-
-    function setXY(
-        uint256 x,
-        uint256 y,
-        uint256 value
-    ) internal {
-        require(map[x][y] == 0, "map already set");
-        map[x][y] = value;
-        emit SetMap(x, y, value);
+    function updateBalance(uint256 _planet, uint256 _ressource) public {
+        // balance = balance + (ressource per second * (now - last time updated)) * bonusmultiplier
+        planetRessources[_planet][_ressource][0] = planetRessources[_planet][_ressource][0] + (planetRessources[_planet][_ressource][1] * (block.timestamp - planetRessources[_planet][_ressource][3]) * planetRessources[_planet][_ressource][2]);
+        planetRessources[_planet][_ressource][3] = block.timestamp; 
     }
 
     function getBalance(uint256 _planet, uint256 _ressource) public view  returns(uint256) {
-        return 0;
+        // This is copied from the updateBalance()
+        return  planetRessources[_planet][_ressource][0] + (planetRessources[_planet][_ressource][1] * (block.timestamp - planetRessources[_planet][_ressource][3]) * planetRessources[_planet][_ressource][2]);
     }
 
     function exportRessources(
