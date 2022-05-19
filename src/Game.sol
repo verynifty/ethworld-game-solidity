@@ -8,9 +8,12 @@ import "openzeppelin-contracts/contracts/access/AccessControlEnumerable.sol";
 
 contract Game is AccessControl {
 
-    mapping(address => uint256) public metal;
-    mapping(address => uint256) public food;
-    mapping(address => uint256) public energy;
+    mapping(uint256 => uint256) public metal;
+    mapping(uint256 => uint256) public food;
+    mapping(uint256 => uint256) public crystal;
+    mapping(uint256 => uint256) public energy;
+    mapping(uint256 => uint256) public coin;
+
 
     mapping(address => uint256) public mine;
     mapping(address => uint256) public farm;

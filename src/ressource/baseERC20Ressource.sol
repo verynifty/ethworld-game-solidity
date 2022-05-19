@@ -8,6 +8,7 @@ import "openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Burnable.so
 import "openzeppelin-contracts/contracts/access/AccessControl.sol";
 
 contract baseERC20Ressource is ERC20, ERC20Burnable, AccessControl {
+    
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
     constructor(string memory name, string memory symbol) ERC20(name, symbol) {
