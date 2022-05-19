@@ -1,13 +1,19 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.12;
 
-import "./PerlinNoise.sol";
+import "./IRessource.sol";
 
-contract Contract {
+contract Game {
+
+
+    mapping(address => IRessource) public ressource;
+
+    function registerRessource(address _ressource) public {
+        ressource[_ressource] = IRessource(_ressource);
+    }
 
     function sampleNoise() public pure {
-        int256 n2d = PerlinNoise.noise2d(32768, 32768);
-        int256 n3d = PerlinNoise.noise3d(32768, 32768, 32768);
+      
     }
 
 }
