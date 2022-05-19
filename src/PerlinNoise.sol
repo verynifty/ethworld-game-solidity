@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.8.12;
 
 /**
  * @notice An implementation of Perlin Noise that uses 16 bit fixed point arithmetic.
