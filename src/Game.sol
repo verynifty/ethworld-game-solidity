@@ -46,11 +46,15 @@ contract Game is AccessControl {
 
     function updateBalance(uint256 _planet, uint256 _ressource) public {
         // balance = balance + (ressource per second * (now - last time updated)) * bonusmultiplier
-        planetRessources[_planet][_ressource][0] =
-            planetRessources[_planet][_ressource][0] +
+        uint256 newBalance = planetRessources[_planet][_ressource][0] +
             (planetRessources[_planet][_ressource][1] *
                 (block.timestamp - planetRessources[_planet][_ressource][3]) *
                 planetRessources[_planet][_ressource][2]);
+        planetRessources[_planet][_ressource][0] = newBalance <
+            planetRessources[_planet][_ressource][4]
+            ? newBalance
+            : planetRessources[_planet][_ressource][4];
+
         planetRessources[_planet][_ressource][3] = block.timestamp;
     }
 
