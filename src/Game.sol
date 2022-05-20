@@ -50,11 +50,11 @@ contract Game is AccessControl {
             (planetRessources[_planet][_ressource][1] *
                 (block.timestamp - planetRessources[_planet][_ressource][3]) *
                 planetRessources[_planet][_ressource][2]);
+        // The balnce is capped depending on the storage cpacity of the planet
         planetRessources[_planet][_ressource][0] = newBalance <
             planetRessources[_planet][_ressource][4]
             ? newBalance
             : planetRessources[_planet][_ressource][4];
-
         planetRessources[_planet][_ressource][3] = block.timestamp;
     }
 
@@ -63,7 +63,7 @@ contract Game is AccessControl {
         view
         returns (uint256)
     {
-        // This is copied from the updateBalance()
+        // This is copied from the updateBalance() NEED TO BE UPDATED
         return
             planetRessources[_planet][_ressource][0] +
             (planetRessources[_planet][_ressource][1] *
