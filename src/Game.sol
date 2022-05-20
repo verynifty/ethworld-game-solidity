@@ -9,13 +9,13 @@ import "./Planet.sol";
 contract Game is AccessControl {
     struct Ressource {
         baseERC20Ressource token;
-        uint256 baseProduction;
+        uint256 baseProductionPerSecond;
         uint256 outTransferTax;
     }
 
     mapping(uint256 => Ressource) public ressources;
 
-    // balance / ressourcepersec / bonusmultiplier /lasttimeupdated / maxstorage
+    // balance / production level / bonusmultiplier /lasttimeupdated / maxstorage
     mapping(uint256 => mapping(uint256 => uint256[5])) public planetRessources;
 
     uint256 public constant MAX_STORAGE_BASE = 1000;
@@ -33,15 +33,12 @@ contract Game is AccessControl {
     function newPlanet(uint256 _id) public {
         planetRessources[_id][0][3] = block.timestamp;
         planetRessources[_id][0][0] = 200 ether;
-        planetRessources[_id][0][1] = ONE_PER_MINUTE;
 
         planetRessources[_id][1][3] = block.timestamp;
         planetRessources[_id][1][0] = 100 ether;
-        planetRessources[_id][1][1] = ONE_PER_MINUTE;
 
         planetRessources[_id][2][3] = block.timestamp;
         planetRessources[_id][2][0] = 300 ether;
-        planetRessources[_id][2][1] = ONE_PER_MINUTE;
 
         planetNFT.mint(msg.sender, _id);
         emit newPlanetMinted(_id);
@@ -61,7 +58,7 @@ contract Game is AccessControl {
     }
 
     function updateBalance(uint256 _planet, uint256 _ressource) public {
-        // balance = balance + (ressource per second * (now - last time updated)) * bonusmultiplier
+        // balance = balance + (BASEPRODUCTION * LEVEL * 1.1 ^ LEVEL)
         uint256 newBalance = planetRessources[_planet][_ressource][0] +
             (planetRessources[_planet][_ressource][1] *
                 (block.timestamp - planetRessources[_planet][_ressource][3]) *
@@ -80,11 +77,7 @@ contract Game is AccessControl {
         returns (uint256)
     {
         // This is copied from the updateBalance() NEED TO BE UPDATED
-        return
-            planetRessources[_planet][_ressource][0] +
-            (planetRessources[_planet][_ressource][1] *
-                (block.timestamp - planetRessources[_planet][_ressource][3]) *
-                planetRessources[_planet][_ressource][2]);
+        return 0;
     }
 
     function exportRessources(

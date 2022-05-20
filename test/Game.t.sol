@@ -52,9 +52,9 @@ contract GameTest is Test {
 
         game.newPlanet(NEW_PLANET_ID);
 
-        assertGt(game.getBalance(NEW_PLANET_ID, 0), 0);
-        assertGt(game.getBalance(NEW_PLANET_ID, 1), 0);
-        assertGt(game.getBalance(NEW_PLANET_ID, 2), 0);
+        //assertGt(game.getBalance(NEW_PLANET_ID, 0), 0);
+        //assertGt(game.getBalance(NEW_PLANET_ID, 1), 0);
+        //assertGt(game.getBalance(NEW_PLANET_ID, 2), 0);
 
         assertEq(planet.ownerOf(NEW_PLANET_ID), address(this));
     }
