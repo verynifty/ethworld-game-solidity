@@ -43,6 +43,7 @@ contract GameTest is Test {
 
     function testRegisterNewPlanet() public {
         uint256 NEW_PLANET_ID = 88;
+        
         emit log("lolol");
         assertEq(game.getBalance(NEW_PLANET_ID, 0), 0);
         assertEq(game.getBalance(NEW_PLANET_ID, 1), 0);
@@ -54,6 +55,6 @@ contract GameTest is Test {
         assertGt(game.getBalance(NEW_PLANET_ID, 1), 0);
         assertGt(game.getBalance(NEW_PLANET_ID, 2), 0);
 
-        assertTrue(true);
+        assertEq(planet.ownerOf(NEW_PLANET_ID), address(this));
     }
 }
