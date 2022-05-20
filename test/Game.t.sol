@@ -25,11 +25,11 @@ contract ContractTest is Test {
 
         food = new Food();
         food.grantRole(food.MINTER_ROLE(), address(game));
-        game.registerRessource(0, address(food));
+        game.registerRessource(1, address(food));
 
         crystal = new Crystal();
         crystal.grantRole(crystal.MINTER_ROLE(), address(game));
-        game.registerRessource(0, address(crystal));
+        game.registerRessource(2, address(crystal));
     }
 
     function testExample() public {

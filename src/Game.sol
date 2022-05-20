@@ -8,13 +8,29 @@ import "openzeppelin-contracts/contracts/access/AccessControlEnumerable.sol";
 contract Game is AccessControl {
 
     mapping(uint256 => baseERC20Ressource) public ressources;
-    // balance / ressourcepersec / bonusmultiplier /lasttimeupdated
-    mapping(uint256 => mapping(uint256 => uint256[4])) public planetRessources;
+    // balance / ressourcepersec / bonusmultiplier /lasttimeupdated / maxstorage
+    mapping(uint256 => mapping(uint256 => uint256[5])) public planetRessources;
+
+
+    uint256 public constant MAX_STORAGE_BASE = 1000;
+    uint256 public constant ONE_PER_MINUTE = 16660000000000000;
 
     event SetMap(uint256 x, uint256 y, uint256 value);
 
+
     constructor() {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+    }
+
+    function newPlanet(uint256 _id) public {
+        planetRessources[_id][0][3] = block.timestamp;
+        planetRessources[_id][0][1] = ONE_PER_MINUTE;
+
+        planetRessources[_id][1][3] = block.timestamp;
+        planetRessources[_id][1][1] = ONE_PER_MINUTE;
+
+        planetRessources[_id][2][3] = block.timestamp;
+        planetRessources[_id][2][1] = ONE_PER_MINUTE;
     }
 
     function registerRessource(uint256 _id, address _ressource) public {
@@ -55,14 +71,6 @@ contract Game is AccessControl {
             planetRessources[_planets[i]][_ressources[i]][0] = planetRessources[_planets[i]][_ressources[i]][0] + _amounts[i];
             ressources[_ressources[i]].forceBurn(msg.sender, _amounts[i]);
         }
-    }
-
-    function useRessource(
-        address _ressource,
-        address _user,
-        address _amount
-    ) public {
-        require(tx.origin == _user, "No rights to use the ressource.");
     }
 
     function craft(address _ressource, uint256 _quantity) public {}
