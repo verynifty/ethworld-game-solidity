@@ -29,7 +29,7 @@ contract Game is AccessControl {
         planetRessources[_id][1][1] = ONE_PER_MINUTE;
 
         planetRessources[_id][2][3] = block.timestamp;
-        planetRessources[_id][1][0] = 300 ether;
+        planetRessources[_id][2][0] = 300 ether;
         planetRessources[_id][2][1] = ONE_PER_MINUTE;
         emit newPlanetMinted(_id);
     }

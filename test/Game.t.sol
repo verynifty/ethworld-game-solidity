@@ -43,9 +43,9 @@ contract GameTest is Test {
 
         game.newPlanet(NEW_PLANET_ID);
 
-        assertEq(game.getBalance(NEW_PLANET_ID, 0), 0);
-        assertEq(game.getBalance(NEW_PLANET_ID, 1), 0);
-        assertEq(game.getBalance(NEW_PLANET_ID, 2), 0);
+        assertGt(game.getBalance(NEW_PLANET_ID, 0), 0);
+        assertGt(game.getBalance(NEW_PLANET_ID, 1), 0);
+        assertGt(game.getBalance(NEW_PLANET_ID, 2), 0);
 
         assertTrue(true);
     }
