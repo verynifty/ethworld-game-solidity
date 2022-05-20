@@ -7,7 +7,14 @@ import "openzeppelin-contracts/contracts/access/AccessControlEnumerable.sol";
 import "./Planet.sol";
 
 contract Game is AccessControl {
-    mapping(uint256 => baseERC20Ressource) public ressources;
+    struct Ressource {
+        baseERC20Ressource token;
+        uint256 baseProduction;
+        uint256 outTransferTax;
+    }
+
+    mapping(uint256 => Ressource) public ressources;
+
     // balance / ressourcepersec / bonusmultiplier /lasttimeupdated / maxstorage
     mapping(uint256 => mapping(uint256 => uint256[5])) public planetRessources;
 
@@ -40,8 +47,17 @@ contract Game is AccessControl {
         emit newPlanetMinted(_id);
     }
 
-    function registerRessource(uint256 _id, address _ressource) public {
-        ressources[_id] = baseERC20Ressource(_ressource);
+    function registerRessource(
+        uint256 _id,
+        address _ressource,
+        uint256 _baseProductionPerSecond,
+        uint256 _outTransferTax
+    ) public {
+        ressources[_id] = Ressource(
+            baseERC20Ressource(_ressource),
+            _baseProductionPerSecond,
+            _outTransferTax
+        );
     }
 
     function updateBalance(uint256 _planet, uint256 _ressource) public {
@@ -79,11 +95,11 @@ contract Game is AccessControl {
     ) public {
         for (uint256 i; i < _planets.length; i++) {
             if (_amounts[i] <= getBalance(_planets[i], _ressources[i])) {
-                ressources[_ressources[i]].mint(
+                ressources[_ressources[i]].token.mint(
                     _recipient,
                     _amounts[i] -
                         (_amounts[i] *
-                            ressources[_ressources[i]].OUTBOND_TRANSFER_TAX()) /
+                            ressources[_ressources[i]].outTransferTax) /
                         100
                 );
                 // remove planet balance
@@ -100,7 +116,7 @@ contract Game is AccessControl {
             planetRessources[_planets[i]][_ressources[i]][0] =
                 planetRessources[_planets[i]][_ressources[i]][0] +
                 _amounts[i];
-            ressources[_ressources[i]].forceBurn(msg.sender, _amounts[i]);
+            ressources[_ressources[i]].token.forceBurn(msg.sender, _amounts[i]);
         }
     }
 

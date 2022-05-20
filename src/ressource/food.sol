@@ -5,6 +5,5 @@ import "./baseERC20Ressource.sol";
 
 contract Food is baseERC20Ressource {
     constructor() baseERC20Ressource("Food", "FOOD") {
-        OUTBOND_TRANSFER_TAX = 35;
     }
 }

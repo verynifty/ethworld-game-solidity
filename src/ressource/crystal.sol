@@ -5,6 +5,5 @@ import "./baseERC20Ressource.sol";
 
 contract Crystal is baseERC20Ressource {
     constructor() baseERC20Ressource("Crystal", "Crystal") {
-        OUTBOND_TRANSFER_TAX = 5;
     }
 }

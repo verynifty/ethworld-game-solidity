@@ -17,6 +17,7 @@ contract GameTest is Test {
     Planet public planet;
 
     Game public game;
+    uint256 public constant ONE_PER_MINUTE = 16660000000000000;
 
 
     function setUp() public {
@@ -28,15 +29,15 @@ contract GameTest is Test {
         /* Add Ressources */
         metal = new Metal();
         metal.grantRole(metal.MINTER_ROLE(), address(game));
-        game.registerRessource(0, address(metal));
+        game.registerRessource(0, address(metal), ONE_PER_MINUTE, 90);
 
         food = new Food();
         food.grantRole(food.MINTER_ROLE(), address(game));
-        game.registerRessource(1, address(food));
+        game.registerRessource(1, address(food), ONE_PER_MINUTE, 70);
 
         crystal = new Crystal();
         crystal.grantRole(crystal.MINTER_ROLE(), address(game));
-        game.registerRessource(2, address(crystal));
+        game.registerRessource(2, address(crystal), ONE_PER_MINUTE, 80);
 
         game.newPlanet(0);
     }
