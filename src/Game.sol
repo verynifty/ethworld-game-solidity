@@ -58,9 +58,10 @@ contract Game is AccessControl {
     }
 
     function updateBalance(uint256 _planet, uint256 _ressource) public {
+        uint256 level = planetRessources[_planet][_ressource][1];
         // balance = balance + (BASEPRODUCTION * LEVEL * 1.1 ^ LEVEL)
         uint256 newBalance = planetRessources[_planet][_ressource][0] +
-            (planetRessources[_planet][_ressource][1] *
+            (ressources[_ressource].baseProductionPerSecond * level * 1 ** level *
                 (block.timestamp - planetRessources[_planet][_ressource][3]) *
                 planetRessources[_planet][_ressource][2]);
         // The balnce is capped depending on the storage cpacity of the planet
