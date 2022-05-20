@@ -14,8 +14,8 @@ contract Planet is ERC721, ERC721Enumerable, ERC721Burnable, AccessControl {
         _grantRole(MINTER_ROLE, msg.sender);
     }
 
-    function safeMint(address to, uint256 tokenId) public onlyRole(MINTER_ROLE) {
-        _safeMint(to, tokenId);
+    function mint(address to, uint256 tokenId) public onlyRole(MINTER_ROLE) {
+        _mint(to, tokenId);
     }
 
     // The following functions are overrides required by Solidity.

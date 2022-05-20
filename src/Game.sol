@@ -4,6 +4,7 @@ pragma solidity ^0.8.12;
 import "./ressource/baseERC20Ressource.sol";
 
 import "openzeppelin-contracts/contracts/access/AccessControlEnumerable.sol";
+import "./Planet.sol";
 
 contract Game is AccessControl {
     mapping(uint256 => baseERC20Ressource) public ressources;
@@ -15,8 +16,11 @@ contract Game is AccessControl {
 
     event newPlanetMinted(uint256 id);
 
-    constructor() {
+    Planet public planetNFT;
+
+    constructor(address _planetNFT) {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        planetNFT = Planet(_planetNFT);
     }
 
     function newPlanet(uint256 _id) public {
@@ -31,6 +35,8 @@ contract Game is AccessControl {
         planetRessources[_id][2][3] = block.timestamp;
         planetRessources[_id][2][0] = 300 ether;
         planetRessources[_id][2][1] = ONE_PER_MINUTE;
+
+        planetNFT.mint(msg.sender, _id);
         emit newPlanetMinted(_id);
     }
 

@@ -3,6 +3,7 @@ pragma solidity ^0.8.12;
 
 import "forge-std/Test.sol";
 import "../src/Game.sol";
+import "../src/Planet.sol";
 
 import "../src/ressource/metal.sol";
 import "../src/ressource/food.sol";
@@ -13,10 +14,16 @@ contract GameTest is Test {
     Food public food;
     Crystal public crystal;
 
+    Planet public planet;
+
     Game public game;
 
+
     function setUp() public {
-        game = new Game();
+        planet = new Planet();
+        game = new Game(address(planet));
+    
+        planet.grantRole(planet.MINTER_ROLE(), address(game));
 
         /* Add Ressources */
         metal = new Metal();
