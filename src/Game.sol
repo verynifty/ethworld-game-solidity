@@ -15,7 +15,7 @@ contract Game is AccessControl {
     uint256 public constant MAX_STORAGE_BASE = 1000;
     uint256 public constant ONE_PER_MINUTE = 16660000000000000;
 
-    event SetMap(uint256 x, uint256 y, uint256 value);
+    event newPlanetMinted(uint256 id);
 
 
     constructor() {
@@ -31,6 +31,8 @@ contract Game is AccessControl {
 
         planetRessources[_id][2][3] = block.timestamp;
         planetRessources[_id][2][1] = ONE_PER_MINUTE;
+
+        emit newPlanetMinted(_id);
     }
 
     function registerRessource(uint256 _id, address _ressource) public {
