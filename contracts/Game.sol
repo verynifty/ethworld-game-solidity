@@ -11,6 +11,7 @@ contract Game is AccessControl {
         BaseERC20Ressource token;
         uint256 baseProductionPerSecond; // How much ressource are generater per second
         uint256 outTransferTax; // Percent of ressources kept when transfering to ERC20
+        uint256 startingBalance;
     }
 
     mapping(uint256 => Ressource) public ressources;
@@ -32,13 +33,13 @@ contract Game is AccessControl {
 
     function newPlanet(uint256 _id) public {
         planetRessources[_id][0][3] = block.timestamp;
-        planetRessources[_id][0][0] = 200 ether;
+        planetRessources[_id][0][0] = ressources[0].startingBalance;
 
         planetRessources[_id][1][3] = block.timestamp;
-        planetRessources[_id][1][0] = 100 ether;
+        planetRessources[_id][1][0] = ressources[1].startingBalance;
 
         planetRessources[_id][2][3] = block.timestamp;
-        planetRessources[_id][2][0] = 300 ether;
+        planetRessources[_id][2][0] = ressources[2].startingBalance;
 
         planetNFT.mint(msg.sender, _id);
         emit newPlanetMinted(_id);
@@ -47,13 +48,15 @@ contract Game is AccessControl {
     function registerRessource(
         uint256 _id,
         address _ressource,
+        uint256 _startingBalance,
         uint256 _baseProductionPerSecond,
         uint256 _outTransferTax
     ) public {
         ressources[_id] = Ressource(
             BaseERC20Ressource(_ressource),
             _baseProductionPerSecond,
-            _outTransferTax
+            _outTransferTax,
+            _startingBalance
         );
     }
 

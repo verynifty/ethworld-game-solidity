@@ -12,9 +12,13 @@ let R3;
 let ONE_PER_MINUTE = 16660000000000000
 
 let ONE_ETHER = 1000000000000000000n;
-let R1_PER_SEC = (ONE_ETHER * 30n / 60n / 60n).toString();
-let R2_PER_SEC = (ONE_ETHER * 20n / 60n / 60n).toString();
-let R3_PER_SEC = (ONE_ETHER * 10n / 60n / 60n).toString();
+let R1_PER_SEC = ONE_ETHER * 30n / 60n / 60n
+let R2_PER_SEC = ONE_ETHER * 20n / 60n / 60n
+let R3_PER_SEC = ONE_ETHER * 10n / 60n / 60n
+
+let R1_START = ONE_ETHER * 300n
+let R2_START = ONE_ETHER * 200n
+let R3_START = ONE_ETHER * 100n
 
 async function setTime(value) {
   await ethers.provider.send("evm_setNextBlockTimestamp", [value]);
@@ -49,9 +53,9 @@ beforeEach(async function () {
   await R3.grantRole(MINTER_ROLE, Game.address);
 
 
-  await Game.registerRessource(0, R1.address, R1_PER_SEC, 30)
-  await Game.registerRessource(1, R1.address, R2_PER_SEC, 30)
-  await Game.registerRessource(2, R1.address, R3_PER_SEC, 30)
+  await Game.registerRessource(0, R1.address, R1_PER_SEC.toString(), 30, R1_START)
+  await Game.registerRessource(1, R1.address, R2_PER_SEC.toString(), 30, R2_START)
+  await Game.registerRessource(2, R1.address, R3_PER_SEC.toString(), 30, R3_START)
 
   await setTime(2000000000)
 });
@@ -59,9 +63,14 @@ beforeEach(async function () {
 
 describe("Game", function () {
   it("Can mint a planet", async function () {
+    const supplyBefore = await Planet.totalSupply()
     const user = (await ethers.getSigners())[0].address;
     await Game.newPlanet(1);
     let owner = await Planet.ownerOf(1)
+    const supplyAfter = await Planet.totalSupply()
+
     expect(owner).to.equal(user);
+    expect(supplyAfter).to.equal(supplyBefore + 1);
   });
+
 });
