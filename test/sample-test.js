@@ -87,6 +87,20 @@ describe("Game", function () {
   it("Planet balance is ok idle", async function () {
     let balance = await Game.getPlanetInfos(FIRST_PLANET);
     console.log(balance)
+
+    await passTime(60 * 60)
+
+    balance = await Game.getPlanetInfos(FIRST_PLANET);
+    console.log(balance)
+
+    await Game.upgradeRessource(FIRST_PLANET, 0)
+    balance = await Game.getPlanetInfos(FIRST_PLANET);
+    console.log(balance)
+
+
+    await passTime(60 * 60)
+    balance = await Game.getPlanetInfos(FIRST_PLANET);
+    console.log(balance)
   });
 
 

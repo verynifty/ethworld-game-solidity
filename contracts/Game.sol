@@ -109,7 +109,8 @@ contract Game is AccessControl {
 
     function upgradeRessource(uint256 _planet, uint256 _ressource) public {
         uint256 cost = 1 ether;
-        _useRessource(_planet, _ressource, cost);
+        updateBalance(_planet, _ressource);
+       // _useRessource(_planet, _ressource, cost);
         planetRessources[_planet][_ressource][1] += 1;
     }
 
