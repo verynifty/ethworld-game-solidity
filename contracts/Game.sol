@@ -9,8 +9,8 @@ import "./Planet.sol";
 contract Game is AccessControl {
     struct Ressource {
         BaseERC20Ressource token;
-        uint256 baseProductionPerSecond;
-        uint256 outTransferTax;
+        uint256 baseProductionPerSecond; // How much ressource are generater per second
+        uint256 outTransferTax; // Percent of ressources kept when transfering to ERC20
     }
 
     mapping(uint256 => Ressource) public ressources;
