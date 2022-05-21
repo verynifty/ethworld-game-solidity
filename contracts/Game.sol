@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.12;
+pragma solidity ^0.8.0;
 
-import "./ressource/baseERC20Ressource.sol";
+import "./BaseERC20Ressource.sol";
 
-import "openzeppelin-contracts/contracts/access/AccessControlEnumerable.sol";
+import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "./Planet.sol";
 
 contract Game is AccessControl {
     struct Ressource {
-        baseERC20Ressource token;
+        BaseERC20Ressource token;
         uint256 baseProductionPerSecond;
         uint256 outTransferTax;
     }
@@ -51,7 +51,7 @@ contract Game is AccessControl {
         uint256 _outTransferTax
     ) public {
         ressources[_id] = Ressource(
-            baseERC20Ressource(_ressource),
+            BaseERC20Ressource(_ressource),
             _baseProductionPerSecond,
             _outTransferTax
         );
@@ -86,7 +86,7 @@ contract Game is AccessControl {
     function upgradeRessource(uint256 _planet, uint256 _ressource) public {
         uint256 cost = 1 ether;
         _useRessource(_planet, _ressource, cost);
-        planetRessources[_planet][1] += 1;
+        planetRessources[_planet][_ressource][1] += 1;
     }
 
     function _useRessource(
