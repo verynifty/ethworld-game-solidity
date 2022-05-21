@@ -11,6 +11,16 @@ let R3;
 
 let ONE_PER_MINUTE = 16660000000000000
 
+async function setTime(value) {
+  await ethers.provider.send("evm_setNextBlockTimestamp", [value]);
+  await ethers.provider.send("evm_mine"); 
+}
+
+async function passTime(value) {
+  await ethers.provider.send("evm_increaseTime", [value]);
+  await ethers.provider.send("evm_mine"); 
+}
+
 beforeEach(async function () {
   console.log("Deploying everything")
 
@@ -22,7 +32,7 @@ beforeEach(async function () {
 
   const PlanetContract = await ethers.getContractFactory("Planet");
   Planet = await PlanetContract.deploy()
-  
+
   const GameContract = await ethers.getContractFactory("Game");
   console.log(Planet.address)
   Game = await GameContract.deploy(Planet.address);
@@ -32,12 +42,14 @@ beforeEach(async function () {
   await R2.grantRole(MINTER_ROLE, Game.address);
   await R3.grantRole(MINTER_ROLE, Game.address);
 
-  
+
   Game.registerRessource(0, R1.address, ONE_PER_MINUTE, 90)
   Game.registerRessource(1, R1.address, ONE_PER_MINUTE, 90)
   Game.registerRessource(2, R1.address, ONE_PER_MINUTE, 90)
 
   console.log(MINTER_ROLE)
+
+  await setTime(2000000000)
 });
 
 
