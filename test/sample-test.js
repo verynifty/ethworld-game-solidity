@@ -2,10 +2,20 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
 
+let Game;
+let Planet;
+
+let R1;
+let R2;
+let R3;
+
 beforeEach(function () {
   console.log("Deploying everything")
-  const Game = await ethers.getContractFactory("Game");
 
+  const GameContract = await ethers.getContractFactory("Game");
+  Game = await GameContract.deploy("Hello, world!");
+
+  console.log(Game)
 });
 
 
