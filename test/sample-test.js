@@ -20,17 +20,22 @@ let R1_START = ONE_ETHER * 300n
 let R2_START = ONE_ETHER * 200n
 let R3_START = ONE_ETHER * 100n
 
+let START_TIME = 2000000000;
+
+let FIRST_PLANET = 1
+let SECOND_PLANET = 2
+
 async function setTime(value) {
   await ethers.provider.send("evm_setNextBlockTimestamp", [value]);
-  await ethers.provider.send("evm_mine"); 
+  await ethers.provider.send("evm_mine");
 }
 
 async function passTime(value) {
   await ethers.provider.send("evm_increaseTime", [value]);
-  await ethers.provider.send("evm_mine"); 
+  await ethers.provider.send("evm_mine");
 }
 
-beforeEach(async function () {
+before(async function () {
 
   const BaseERC20RessourceContract = await ethers.getContractFactory("BaseERC20Ressource")
   R1 = await BaseERC20RessourceContract.deploy("Resource1", "R1")
@@ -52,25 +57,38 @@ beforeEach(async function () {
   await R2.grantRole(MINTER_ROLE, Game.address);
   await R3.grantRole(MINTER_ROLE, Game.address);
 
+console.log(R1_START.toString())
+  await Game.registerRessource(0, R1.address, R1_PER_SEC.toString(), 30, R1_START.toString())
+  await Game.registerRessource(1, R1.address, R2_PER_SEC.toString(), 30, R2_START.toString())
+  await Game.registerRessource(2, R1.address, R3_PER_SEC.toString(), 30, R3_START.toString())
 
-  await Game.registerRessource(0, R1.address, R1_PER_SEC.toString(), 30, R1_START)
-  await Game.registerRessource(1, R1.address, R2_PER_SEC.toString(), 30, R2_START)
-  await Game.registerRessource(2, R1.address, R3_PER_SEC.toString(), 30, R3_START)
+  await Game.newPlanet(FIRST_PLANET);
+  await Game.newPlanet(SECOND_PLANET);
 
-  await setTime(2000000000)
+  await setTime(START_TIME)
 });
 
 
 describe("Game", function () {
   it("Can mint a planet", async function () {
+    let TEST_ID = 66
     const supplyBefore = await Planet.totalSupply()
     const user = (await ethers.getSigners())[0].address;
-    await Game.newPlanet(1);
-    let owner = await Planet.ownerOf(1)
+
+    await Game.newPlanet(TEST_ID);
+    let owner = await Planet.ownerOf(TEST_ID)
+
     const supplyAfter = await Planet.totalSupply()
 
     expect(owner).to.equal(user);
-    expect(supplyAfter).to.equal(supplyBefore + 1);
+    expect(supplyAfter).to.equal(supplyBefore.toNumber() + 1);
   });
+
+  it("Planet balance is ok idle", async function () {
+    let balance = await Game.getPlanetInfos(FIRST_PLANET);
+    console.log(balance)
+  });
+
+
 
 });

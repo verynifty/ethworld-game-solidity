@@ -48,9 +48,9 @@ contract Game is AccessControl {
     function registerRessource(
         uint256 _id,
         address _ressource,
-        uint256 _startingBalance,
         uint256 _baseProductionPerSecond,
-        uint256 _outTransferTax
+        uint256 _outTransferTax,
+        uint256 _startingBalance
     ) public {
         ressources[_id] = Ressource(
             BaseERC20Ressource(_ressource),
@@ -58,6 +58,20 @@ contract Game is AccessControl {
             _outTransferTax,
             _startingBalance
         );
+    }
+
+    function getPlanetInfos(uint256 _planet)
+        public
+        view
+        returns (
+            uint256 r1,
+            uint256 r2,
+            uint256 r3
+        )
+    {
+        r1 = getBalance(_planet, 0);
+        r2 = getBalance(_planet, 1);
+        r3 = getBalance(_planet, 2);
     }
 
     function updateBalance(uint256 _planet, uint256 _ressource) public {
@@ -82,8 +96,15 @@ contract Game is AccessControl {
         view
         returns (uint256)
     {
-        // This is copied from the updateBalance() NEED TO BE UPDATED
-        return 0;
+        uint256 level = planetRessources[_planet][_ressource][1];
+        // balance = balance + (BASEPRODUCTION * LEVEL * 1.1 ^ LEVEL)
+        uint256 newBalance = planetRessources[_planet][_ressource][0] +
+            (ressources[_ressource].baseProductionPerSecond *
+                level *
+                1**level *
+                (block.timestamp - planetRessources[_planet][_ressource][3]) *
+                planetRessources[_planet][_ressource][2]); // This is copied from the updateBalance() NEED TO BE UPDATED
+        return newBalance;
     }
 
     function upgradeRessource(uint256 _planet, uint256 _ressource) public {
