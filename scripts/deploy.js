@@ -4,22 +4,40 @@
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
+const { ethers } = require("hardhat");
+
 
 async function main() {
-  // Hardhat always runs the compile task when running scripts with its command
-  // line interface.
-  //
-  // If this script is run directly using `node` you may want to call compile
-  // manually to make sure everything is compiled
-  // await hre.run('compile');
+ 
+  let ONE_PER_MINUTE = "16660000000000000";
 
-  // We get the contract to deploy
-  const Greeter = await hre.ethers.getContractFactory("Greeter");
-  const greeter = await Greeter.deploy("Hello, Hardhat!");
+  const BaseERC20RessourceContract = await ethers.getContractFactory("BaseERC20Ressource")
+  console.log("Deplou")
+  R1 = await BaseERC20RessourceContract.deploy("Resource1", "R1")
+  console.log("Deployed")
 
-  await greeter.deployed();
+  R2 = await BaseERC20RessourceContract.deploy("Resource2", "R2")
+  R3 = await BaseERC20RessourceContract.deploy("Resource3", "R3")
 
-  console.log("Greeter deployed to:", greeter.address);
+
+  const PlanetContract = await ethers.getContractFactory("Planet");
+  Planet = await PlanetContract.deploy()
+
+  const GameContract = await ethers.getContractFactory("Game");
+  console.log(Planet.address)
+  Game = await GameContract.deploy(Planet.address);
+
+  const MINTER_ROLE = await Planet.MINTER_ROLE();
+  await R1.grantRole(MINTER_ROLE, Game.address);
+  await R2.grantRole(MINTER_ROLE, Game.address);
+  await R3.grantRole(MINTER_ROLE, Game.address);
+
+
+  await Game.registerRessource(0, R1.address, ONE_PER_MINUTE, 90)
+  await Game.registerRessource(1, R1.address, ONE_PER_MINUTE, 90)
+  await Game.registerRessource(2, R1.address, ONE_PER_MINUTE, 90)
+
+
 }
 
 // We recommend this pattern to be able to use async/await everywhere

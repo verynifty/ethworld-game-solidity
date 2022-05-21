@@ -43,9 +43,9 @@ beforeEach(async function () {
   await R3.grantRole(MINTER_ROLE, Game.address);
 
 
-  Game.registerRessource(0, R1.address, ONE_PER_MINUTE, 90)
-  Game.registerRessource(1, R1.address, ONE_PER_MINUTE, 90)
-  Game.registerRessource(2, R1.address, ONE_PER_MINUTE, 90)
+  await Game.registerRessource(0, R1.address, ONE_PER_MINUTE, 90)
+  await Game.registerRessource(1, R1.address, ONE_PER_MINUTE, 90)
+  await Game.registerRessource(2, R1.address, ONE_PER_MINUTE, 90)
 
   console.log(MINTER_ROLE)
 
