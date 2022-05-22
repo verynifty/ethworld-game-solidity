@@ -35,6 +35,18 @@ async function passTime(value) {
   await ethers.provider.send("evm_mine");
 }
 
+function printNumber(n) {
+  console.log(ethers.utils.formatEther(n))
+}
+
+async function printInfos(_planetId) {
+  let infos = await Game.getPlanetInfos(_planetId);
+  console.log("=== Planet infos:", _planetId);
+  printNumber(infos.r1)
+  printNumber(infos.r2)
+  printNumber(infos.r3)
+}
+
 before(async function () {
 
   const BaseERC20RessourceContract = await ethers.getContractFactory("BaseERC20Ressource")
@@ -85,22 +97,21 @@ describe("Game", function () {
   });
 
   it("Planet balance is ok idle", async function () {
-    let balance = await Game.getPlanetInfos(FIRST_PLANET);
-    console.log(balance)
+    await printInfos(FIRST_PLANET);
+
 
     await passTime(60 * 60)
 
-    balance = await Game.getPlanetInfos(FIRST_PLANET);
-    console.log(balance)
+    await printInfos(FIRST_PLANET);
+
 
     await Game.upgradeRessource(FIRST_PLANET, 0)
-    balance = await Game.getPlanetInfos(FIRST_PLANET);
-    console.log(balance)
+    await printInfos(FIRST_PLANET);
 
 
     await passTime(60 * 60)
-    balance = await Game.getPlanetInfos(FIRST_PLANET);
-    console.log(balance)
+    await printInfos(FIRST_PLANET);
+
   });
 
 

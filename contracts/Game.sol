@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
+import "hardhat/console.sol";
+
 import "./BaseERC20Ressource.sol";
 
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
@@ -77,17 +79,6 @@ contract Game is AccessControl {
     function updateBalance(uint256 _planet, uint256 _ressource) public {
         uint256 level = planetRessources[_planet][_ressource][1];
         // balance = balance + (BASEPRODUCTION * LEVEL * 1.1 ^ LEVEL)
-        uint256 newBalance = planetRessources[_planet][_ressource][0] +
-            (ressources[_ressource].baseProductionPerSecond *
-                level *
-                1**level *
-                (block.timestamp - planetRessources[_planet][_ressource][3]) *
-                planetRessources[_planet][_ressource][2]);
-        // The balnce is capped depending on the storage cpacity of the planet
-        planetRessources[_planet][_ressource][0] = newBalance <
-            planetRessources[_planet][_ressource][4]
-            ? newBalance
-            : planetRessources[_planet][_ressource][4];
         planetRessources[_planet][_ressource][3] = block.timestamp;
     }
 
@@ -97,20 +88,33 @@ contract Game is AccessControl {
         returns (uint256)
     {
         uint256 level = planetRessources[_planet][_ressource][1];
+        if (_ressource == 0) {
+            console.log("Balance: ", planetRessources[_planet][_ressource][0]);
+            console.log("Level: ", planetRessources[_planet][_ressource][1]);
+            console.log("Bonus: ", planetRessources[_planet][_ressource][2]);
+            console.log(
+                "Last time: ",
+                planetRessources[_planet][_ressource][3]
+            );
+            console.log(
+                "Time elapsed: %s",
+                block.timestamp - planetRessources[_planet][_ressource][3]
+            );
+        }
+            console.log("PERSEC %s, : ", planetRessources[_planet][_ressource][0]);
         // balance = balance + (BASEPRODUCTION * LEVEL * 1.1 ^ LEVEL)
         uint256 newBalance = planetRessources[_planet][_ressource][0] +
             (ressources[_ressource].baseProductionPerSecond *
                 level *
                 1**level *
-                (block.timestamp - planetRessources[_planet][_ressource][3]) *
-                planetRessources[_planet][_ressource][2]); // This is copied from the updateBalance() NEED TO BE UPDATED
+                (block.timestamp - planetRessources[_planet][_ressource][3])); // This is copied from the updateBalance() NEED TO BE UPDATED
         return newBalance;
     }
 
     function upgradeRessource(uint256 _planet, uint256 _ressource) public {
         uint256 cost = 1 ether;
         updateBalance(_planet, _ressource);
-       // _useRessource(_planet, _ressource, cost);
+        // _useRessource(_planet, _ressource, cost);
         planetRessources[_planet][_ressource][1] += 1;
     }
 
@@ -119,9 +123,7 @@ contract Game is AccessControl {
         uint256 _ressource,
         uint256 _amount
     ) internal {
-        if (planetRessources[_planet][_ressource][0] < _amount) {
-            updateBalance(_planet, _ressource);
-        }
+        updateBalance(_planet, _ressource);
         planetRessources[_planet][_ressource][0] -= _amount;
     }
 
