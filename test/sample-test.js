@@ -69,20 +69,20 @@ before(async function () {
   await R2.grantRole(MINTER_ROLE, Game.address);
   await R3.grantRole(MINTER_ROLE, Game.address);
 
-console.log(R1_START.toString())
+  console.log(R1_START.toString())
   await Game.registerRessource(0, R1.address, R1_PER_SEC.toString(), 30, R1_START.toString())
   await Game.registerRessource(1, R1.address, R2_PER_SEC.toString(), 30, R2_START.toString())
   await Game.registerRessource(2, R1.address, R3_PER_SEC.toString(), 30, R3_START.toString())
 
   await Game.newPlanet(FIRST_PLANET);
   await Game.newPlanet(SECOND_PLANET);
-
   await setTime(START_TIME)
 });
 
 
 describe("Game", function () {
   it("Can mint a planet", async function () {
+    return
     let TEST_ID = 66
     const supplyBefore = await Planet.totalSupply()
     const user = (await ethers.getSigners())[0].address;
@@ -97,6 +97,7 @@ describe("Game", function () {
   });
 
   it("Planet balance is ok idle", async function () {
+    return
     await printInfos(FIRST_PLANET);
 
 
@@ -116,12 +117,12 @@ describe("Game", function () {
 
 
   it("Check upgrade costs", async function () {
+    return;
       for (let index = 1; index < 100; index++) {
         console.log("Level", index)
         let cost = await Game.getUpgradeCost(0, index)
         printNumber(cost.r1)
         printNumber(cost.r2)
-
       }
 
   });
