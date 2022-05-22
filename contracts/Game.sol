@@ -108,7 +108,7 @@ contract Game is AccessControl {
         uint256 newBalance = planetRessources[_planet][_ressource][0] +
             (((ressources[_ressource].baseProductionPerSecond *
                 (level) *
-                (11**level * 100)) / 10**level) *
+                (33**level * 100)) / 3**level) *
                 (block.timestamp - planetRessources[_planet][_ressource][3])) /
             100;
         return newBalance;
@@ -120,14 +120,14 @@ contract Game is AccessControl {
         returns (uint256 r1, uint256 r2)
     {
         if (_ressource == 0) {
-            r1 = ((60 ether * (3**(_level - 1) * 100)) / 2**(_level - 1)) / 100;
-            r2 = ((15 ether * (3**(_level - 1) * 100)) / 2**(_level - 1)) / 100;
+            r1 = ((60  * (3**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
+            r2 = ((15  * (3**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
         } else if (_ressource == 1) {
-            r1 = ((48 ether * (32**(_level - 1) * 100)) / 2**(_level - 1)) / 100;
-            r2 = ((25 ether * (32**(_level - 1) * 100)) / 2**(_level - 1)) / 100;
+            r1 = ((48  * (32**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
+            r2 = ((25  * (32**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
         } else if (_ressource == 2) {
-            r1 = ((225 ether * (3**(_level - 1) * 100)) / 2**(_level - 1)) / 100;
-            r2 = ((75 ether * (3**(_level - 1) * 100)) / 2**(_level - 1)) / 100;
+            r1 = ((225  * (3**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
+            r2 = ((75  * (3**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
         }
     }
 

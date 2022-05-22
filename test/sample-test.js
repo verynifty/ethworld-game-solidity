@@ -97,7 +97,7 @@ describe("Game", function () {
   });
 
   it("Planet balance is ok idle", async function () {
-    return
+    
     await printInfos(FIRST_PLANET);
 
 
@@ -117,8 +117,7 @@ describe("Game", function () {
 
 
   it("Check upgrade costs", async function () {
-    return;
-      for (let index = 1; index < 100; index++) {
+      for (let index = 1; index < 400; index++) {
         console.log("Level", index)
         let cost = await Game.getUpgradeCost(0, index)
         printNumber(cost.r1)
