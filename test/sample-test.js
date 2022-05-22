@@ -115,5 +115,17 @@ describe("Game", function () {
   });
 
 
+  it("Check upgrade costs", async function () {
+      for (let index = 1; index < 100; index++) {
+        console.log("Level", index)
+        let cost = await Game.getUpgradeCost(0, index)
+        printNumber(cost.r1)
+        printNumber(cost.r2)
+
+      }
+
+  });
+
+
 
 });

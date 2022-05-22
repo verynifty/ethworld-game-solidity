@@ -77,7 +77,10 @@ contract Game is AccessControl {
     }
 
     function updateBalance(uint256 _planet, uint256 _ressource) public {
-        planetRessources[_planet][_ressource][0] = getBalance(_planet, _ressource);
+        planetRessources[_planet][_ressource][0] = getBalance(
+            _planet,
+            _ressource
+        );
         planetRessources[_planet][_ressource][3] = block.timestamp;
     }
 
@@ -86,7 +89,7 @@ contract Game is AccessControl {
         view
         returns (uint256)
     {
-        uint256 level = planetRessources[_planet][_ressource][1] + 1;
+        uint256 level = planetRessources[_planet][_ressource][1] + 0;
         if (_ressource == 0) {
             console.log("Balance: ", planetRessources[_planet][_ressource][0]);
             console.log("Level: ", planetRessources[_planet][_ressource][1]);
@@ -104,18 +107,34 @@ contract Game is AccessControl {
         // balance = balance + (BASEPRODUCTION * LEVEL * 1.1 ^ LEVEL)
         uint256 newBalance = planetRessources[_planet][_ressource][0] +
             (((ressources[_ressource].baseProductionPerSecond *
-                (level + 0) *
-                (11**level * 10)) / 10**level) *
+                (level) *
+                (11**level * 100)) / 10**level) *
                 (block.timestamp - planetRessources[_planet][_ressource][3])) /
-            10; // This is copied from the updateBalance() NEED TO BE UPDATED
+            100;
         return newBalance;
     }
 
+    function getUpgradeCost(uint256 _ressource, uint256 _level)
+        public
+        pure
+        returns (uint256 r1, uint256 r2)
+    {
+        if (_ressource == 0) {
+            r1 = ((60 ether * (3**(_level - 1) * 100)) / 2**(_level - 1)) / 100;
+            r2 = ((15 ether * (3**(_level - 1) * 100)) / 2**(_level - 1)) / 100;
+        } else if (_ressource == 1) {
+            r1 = ((48 ether * (32**(_level - 1) * 100)) / 2**(_level - 1)) / 100;
+            r2 = ((25 ether * (32**(_level - 1) * 100)) / 2**(_level - 1)) / 100;
+        } else if (_ressource == 2) {
+            r1 = ((225 ether * (3**(_level - 1) * 100)) / 2**(_level - 1)) / 100;
+            r2 = ((75 ether * (3**(_level - 1) * 100)) / 2**(_level - 1)) / 100;
+        }
+    }
+
     function upgradeRessource(uint256 _planet, uint256 _ressource) public {
-        uint256 cost = 1 ether;
         updateBalance(_planet, _ressource);
         // _useRessource(_planet, _ressource, cost);
-        planetRessources[_planet][_ressource][1] += 35;
+        planetRessources[_planet][_ressource][1] += 2;
     }
 
     function _useRessource(
@@ -127,7 +146,7 @@ contract Game is AccessControl {
         planetRessources[_planet][_ressource][0] -= _amount;
     }
 
-      function _useRessourceOrBalance(
+    function _useRessourceOrBalance(
         uint256 _planet,
         uint256 _ressource,
         uint256 _amount
