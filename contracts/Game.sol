@@ -127,6 +127,18 @@ contract Game is AccessControl {
         planetRessources[_planet][_ressource][0] -= _amount;
     }
 
+      function _useRessourceOrBalance(
+        uint256 _planet,
+        uint256 _ressource,
+        uint256 _amount
+    ) internal {
+        if (planetRessources[_planet][_ressource][0] > 0) {
+            planetRessources[_planet][_ressource][0] -= _amount;
+        } else {
+            _useRessource(_planet, _ressource, _amount);
+        }
+    }
+
     function exportRessources(
         address _recipient,
         uint256[] calldata _planets,
