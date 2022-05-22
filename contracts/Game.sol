@@ -77,8 +77,7 @@ contract Game is AccessControl {
     }
 
     function updateBalance(uint256 _planet, uint256 _ressource) public {
-        uint256 level = planetRessources[_planet][_ressource][1];
-        // balance = balance + (BASEPRODUCTION * LEVEL * 1.1 ^ LEVEL)
+        planetRessources[_planet][_ressource][0] = getBalance(_planet, _ressource);
         planetRessources[_planet][_ressource][3] = block.timestamp;
     }
 
@@ -87,7 +86,7 @@ contract Game is AccessControl {
         view
         returns (uint256)
     {
-        uint256 level = planetRessources[_planet][_ressource][1];
+        uint256 level = planetRessources[_planet][_ressource][1] + 1;
         if (_ressource == 0) {
             console.log("Balance: ", planetRessources[_planet][_ressource][0]);
             console.log("Level: ", planetRessources[_planet][_ressource][1]);
@@ -101,13 +100,14 @@ contract Game is AccessControl {
                 block.timestamp - planetRessources[_planet][_ressource][3]
             );
         }
-            console.log("PERSEC %s, : ", planetRessources[_planet][_ressource][0]);
+        console.log("PERSEC %s, : ", planetRessources[_planet][_ressource][0]);
         // balance = balance + (BASEPRODUCTION * LEVEL * 1.1 ^ LEVEL)
         uint256 newBalance = planetRessources[_planet][_ressource][0] +
-            (ressources[_ressource].baseProductionPerSecond *
+            (((ressources[_ressource].baseProductionPerSecond *
                 (level + 0) *
-                (11**level  * 10) / 10** level *
-                (block.timestamp - planetRessources[_planet][_ressource][3])) / 10; // This is copied from the updateBalance() NEED TO BE UPDATED
+                (11**level * 10)) / 10**level) *
+                (block.timestamp - planetRessources[_planet][_ressource][3])) /
+            10; // This is copied from the updateBalance() NEED TO BE UPDATED
         return newBalance;
     }
 
