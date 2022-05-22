@@ -105,23 +105,27 @@ describe("Game", function () {
 
     await printInfos(FIRST_PLANET);
 
-
+    let cost = await Game.getUpgradeCost(0, 2)
+    console.log("UPGRADE COST")
+    printNumber(cost.r1)
+    printNumber(cost.r2)
     await Game.upgradeRessource(FIRST_PLANET, 0)
     await printInfos(FIRST_PLANET);
 
 
     await passTime(60 * 60)
     await printInfos(FIRST_PLANET);
+    console.log("JFJFJFJFJJF")
 
   });
 
 
   it("Check upgrade costs", async function () {
-      for (let index = 1; index < 400; index++) {
-        console.log("Level", index)
+      for (let index = 1; index < 100; index++) {
+       // console.log("Level", index)
         let cost = await Game.getUpgradeCost(0, index)
-        printNumber(cost.r1)
-        printNumber(cost.r2)
+       // printNumber(cost.r1)
+       // printNumber(cost.r2)
       }
 
   });

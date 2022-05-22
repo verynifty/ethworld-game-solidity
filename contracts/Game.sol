@@ -77,6 +77,11 @@ contract Game is AccessControl {
     }
 
     function updateBalance(uint256 _planet, uint256 _ressource) public {
+            console.log("UPDATEBL BEFORE/AFTER %s %s", planetRessources[_planet][_ressource][0], getBalance(
+            _planet,
+            _ressource
+        ));
+
         planetRessources[_planet][_ressource][0] = getBalance(
             _planet,
             _ressource
@@ -89,7 +94,7 @@ contract Game is AccessControl {
         view
         returns (uint256)
     {
-        uint256 level = planetRessources[_planet][_ressource][1] + 0;
+        uint256 level = planetRessources[_planet][_ressource][1] + 1;
         if (_ressource == 0) {
             console.log("Balance: ", planetRessources[_planet][_ressource][0]);
             console.log("Level: ", planetRessources[_planet][_ressource][1]);
@@ -146,6 +151,7 @@ contract Game is AccessControl {
         uint256 _amount
     ) internal {
         updateBalance(_planet, _ressource);
+        console.log("BEFORE/AFTER %s %s", planetRessources[_planet][_ressource][0], _amount);
         planetRessources[_planet][_ressource][0] -= _amount;
     }
 
