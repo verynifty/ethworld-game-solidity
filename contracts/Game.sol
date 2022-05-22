@@ -132,9 +132,12 @@ contract Game is AccessControl {
     }
 
     function upgradeRessource(uint256 _planet, uint256 _ressource) public {
-        updateBalance(_planet, _ressource);
-        // _useRessource(_planet, _ressource, cost);
-        planetRessources[_planet][_ressource][1] += 2;
+        uint256 r1;
+        uint256 r2;
+        (r1, r2)  = getUpgradeCost(_ressource, planetRessources[_planet][_ressource][1] + 1);
+        _ressource != 0 ? _useRessourceOrBalance(_planet, 0, r1): _useRessource(_planet, 0, r1);
+        _ressource != 1 ? _useRessourceOrBalance(_planet, 1, r2): _useRessource(_planet, 1, r2);
+        planetRessources[_planet][_ressource][1] += 1;
     }
 
     function _useRessource(
