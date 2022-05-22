@@ -16,7 +16,7 @@ let R1_PER_SEC = ONE_ETHER * 30n / 60n / 60n
 let R2_PER_SEC = ONE_ETHER * 20n / 60n / 60n
 let R3_PER_SEC = ONE_ETHER * 10n / 60n / 60n
 
-let R1_START = ONE_ETHER * 300n
+let R1_START = ONE_ETHER * 0n
 let R2_START = ONE_ETHER * 200n
 let R3_START = ONE_ETHER * 100n
 

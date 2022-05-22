@@ -105,9 +105,9 @@ contract Game is AccessControl {
         // balance = balance + (BASEPRODUCTION * LEVEL * 1.1 ^ LEVEL)
         uint256 newBalance = planetRessources[_planet][_ressource][0] +
             (ressources[_ressource].baseProductionPerSecond *
-                level *
-                1**level *
-                (block.timestamp - planetRessources[_planet][_ressource][3])); // This is copied from the updateBalance() NEED TO BE UPDATED
+                (level + 0) *
+                (11**level  * 10) / 10** level *
+                (block.timestamp - planetRessources[_planet][_ressource][3])) / 10; // This is copied from the updateBalance() NEED TO BE UPDATED
         return newBalance;
     }
 
@@ -115,7 +115,7 @@ contract Game is AccessControl {
         uint256 cost = 1 ether;
         updateBalance(_planet, _ressource);
         // _useRessource(_planet, _ressource, cost);
-        planetRessources[_planet][_ressource][1] += 1;
+        planetRessources[_planet][_ressource][1] += 35;
     }
 
     function _useRessource(
