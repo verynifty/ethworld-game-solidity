@@ -3,11 +3,22 @@ import { providers, ethers } from "ethers";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 
+let providerOptions = {
+  walletconnect: {
+      package: WalletConnectProvider, // required
+      options: {
+          infuraId: "412acf21edf5444a8c9f6bd737cf8ca2", // required
+      },
+  },
+};
+
+let w3;
+
 export default createStore({
   state: {
     account: null,
     login_secret: null,
-    askConnection: false
+    askConnection: false,
   },
   getters: {
   },

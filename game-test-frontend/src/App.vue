@@ -69,18 +69,7 @@
             md:mt-0
           "
         >
-          Button
-          <svg
-            fill="none"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            class="w-4 h-4 ml-1"
-            viewBox="0 0 24 24"
-          >
-            <path d="M5 12h14M12 5l7 7-7 7"></path>
-          </svg>
+         <ConnectButton />
         </button>
       </div>
     </header>
@@ -88,6 +77,17 @@
     <router-view />
   </div>
 </template>
+
+<script>
+import ConnectButton from '@/components/web3/ConnectButton.vue'
+
+export default {
+  name: 'App',
+  components: {
+   ConnectButton
+  }
+}
+</script>
 
 <style>
 </style>
