@@ -19,5 +19,11 @@ contract MapUtils {
         isValid = encoded % _difficulty == 0;
         isValid = isValid && universe == _universe;
     }
-    
+
+    function getDistance(uint256 _x1, uint256 _y1, uint256 _x2, uint256 _y2) public pure returns (
+        uint256
+    ) {
+        
+    }
+
 }
