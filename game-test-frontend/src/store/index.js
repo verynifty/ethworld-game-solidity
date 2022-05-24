@@ -49,8 +49,6 @@ export default createStore({
     },
     connect: async function (context, opt = {}) {
       try {
-
-
         let web3Modal = new Web3Modal({
           network: "mainnet", // optional
           cacheProvider: true, // optional

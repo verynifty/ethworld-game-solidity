@@ -77,10 +77,11 @@ contract Game is AccessControl {
     }
 
     function updateBalance(uint256 _planet, uint256 _ressource) public {
-            console.log("UPDATEBL BEFORE/AFTER %s %s", planetRessources[_planet][_ressource][0], getBalance(
-            _planet,
-            _ressource
-        ));
+        console.log(
+            "UPDATEBL BEFORE/AFTER %s %s",
+            planetRessources[_planet][_ressource][0],
+            getBalance(_planet, _ressource)
+        );
 
         planetRessources[_planet][_ressource][0] = getBalance(
             _planet,
@@ -122,26 +123,46 @@ contract Game is AccessControl {
     function getUpgradeCost(uint256 _ressource, uint256 _level)
         public
         pure
-        returns (uint256 r1, uint256 r2)
+        returns (
+            uint256 r1,
+            uint256 r2
+        )
     {
+        uint256 energy;
         if (_ressource == 0) {
-            r1 = ((60  * (3**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
-            r2 = ((15  * (3**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
+            r1 = ((60 * (3**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
+            r2 = ((15 * (3**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
+            energy =
+                ((10 * (11**(_level - 1) * 100)) / 10**(_level - 1)) *
+                10**16;
         } else if (_ressource == 1) {
-            r1 = ((48  * (32**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
-            r2 = ((25  * (32**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
+            r1 = ((48 * (32**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
+            r2 = ((25 * (32**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
+            energy =
+                ((10 * (11**(_level - 1) * 100)) / 10**(_level - 1)) *
+                10**16;
         } else if (_ressource == 2) {
-            r1 = ((225  * (3**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
-            r2 = ((75  * (3**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
+            r1 = ((225 * (3**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
+            r2 = ((75 * (3**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
+            energy =
+                ((20 * (11**(_level - 1) * 100)) / 10**(_level - 1)) *
+                10**16;
         }
     }
 
     function upgradeRessource(uint256 _planet, uint256 _ressource) public {
         uint256 r1;
         uint256 r2;
-        (r1, r2)  = getUpgradeCost(_ressource, planetRessources[_planet][_ressource][1] + 1);
-        _ressource != 0 ? _useRessourceOrBalance(_planet, 0, r1): _useRessource(_planet, 0, r1);
-        _ressource != 1 ? _useRessourceOrBalance(_planet, 1, r2): _useRessource(_planet, 1, r2);
+        (r1, r2) = getUpgradeCost(
+            _ressource,
+            planetRessources[_planet][_ressource][1] + 1
+        );
+        _ressource != 0
+            ? _useRessourceOrBalance(_planet, 0, r1)
+            : _useRessource(_planet, 0, r1);
+        _ressource != 1
+            ? _useRessourceOrBalance(_planet, 1, r2)
+            : _useRessource(_planet, 1, r2);
         planetRessources[_planet][_ressource][1] += 1;
     }
 
@@ -151,7 +172,11 @@ contract Game is AccessControl {
         uint256 _amount
     ) internal {
         updateBalance(_planet, _ressource);
-        console.log("BEFORE/AFTER %s %s", planetRessources[_planet][_ressource][0], _amount);
+        console.log(
+            "BEFORE/AFTER %s %s",
+            planetRessources[_planet][_ressource][0],
+            _amount
+        );
         planetRessources[_planet][_ressource][0] -= _amount;
     }
 
