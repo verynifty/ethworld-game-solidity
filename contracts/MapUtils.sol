@@ -5,25 +5,25 @@ contract MapUtils {
         pure
         returns (
             bool isValid,
-            uint256 x,
-            uint256 y,
+            int256 x,
+            int256 y,
             uint256 size
         )
     {
         uint256 universe;
         (universe, x, y, size) = abi.decode(
             _data,
-            (uint256, uint256, uint256, uint256)
+            (uint256, int256, int256, uint256)
         );
         uint256 encoded = uint256(keccak256(_data));
         isValid = encoded % _difficulty == 0;
         isValid = isValid && universe == _universe;
     }
 
-    function getDistance(uint256 _x1, uint256 _y1, uint256 _x2, uint256 _y2) public pure returns (
+    function getDistance(int256 _x1, int256 _y1, int256 _x2, int256 _y2) public pure returns (
         uint256
     ) {
-        
+
     }
 
 }
