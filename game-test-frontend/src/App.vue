@@ -37,7 +37,7 @@
               d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
             ></path>
           </svg>
-          <span class="ml-3 text-xl">Smple game</span>
+          <span class="ml-3 text-xl">Ssmple game</span>
         </a>
         <nav
           class="
@@ -49,6 +49,9 @@
           "
         >
           <router-link class="mr-5 hover:text-white" to="/">Main</router-link>
+                    <router-link class="mr-5 hover:text-white" to="/map"
+            >Map</router-link
+          >
           <router-link class="mr-5 hover:text-white" to="/about"
             >About</router-link
           >
