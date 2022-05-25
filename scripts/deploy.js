@@ -7,37 +7,67 @@ const hre = require("hardhat");
 const { ethers } = require("hardhat");
 
 
+let Game;
+let Planet;
+
+let R1;
+let R2;
+let R3;
+
+let ONE_PER_MINUTE = 16660000000000000
+
+let ONE_ETHER = 1000000000000000000n;
+let R1_PER_SEC = ONE_ETHER * 30n / 60n / 60n
+let R2_PER_SEC = ONE_ETHER * 20n / 60n / 60n
+let R3_PER_SEC = ONE_ETHER * 10n / 60n / 60n
+
+let R1_START = ONE_ETHER * 0n
+let R2_START = ONE_ETHER * 200n
+let R3_START = ONE_ETHER * 100n
+
+let START_TIME = 2000000000;
+
+let FIRST_PLANET = 1
+let SECOND_PLANET = 2
+
 async function main() {
- 
-  let ONE_PER_MINUTE = "16660000000000000";
 
-  const BaseERC20RessourceContract = await ethers.getContractFactory("BaseERC20Ressource")
-  console.log("Deplou")
-  R1 = await BaseERC20RessourceContract.deploy("Resource1", "R1")
-  console.log("Deployed")
-
-  R2 = await BaseERC20RessourceContract.deploy("Resource2", "R2")
-  R3 = await BaseERC20RessourceContract.deploy("Resource3", "R3")
+  try {
 
 
-  const PlanetContract = await ethers.getContractFactory("Planet");
-  Planet = await PlanetContract.deploy()
 
-  const GameContract = await ethers.getContractFactory("Game");
-  console.log(Planet.address)
-  Game = await GameContract.deploy(Planet.address);
-
-  const MINTER_ROLE = await Planet.MINTER_ROLE();
-  await R1.grantRole(MINTER_ROLE, Game.address);
-  await R2.grantRole(MINTER_ROLE, Game.address);
-  await R3.grantRole(MINTER_ROLE, Game.address);
+    const BaseERC20RessourceContract = await ethers.getContractFactory("BaseERC20Ressource")
+    R1 = await BaseERC20RessourceContract.deploy("Resource1", "R1")
+    R2 = await BaseERC20RessourceContract.deploy("Resource2", "R2")
+    R3 = await BaseERC20RessourceContract.deploy("Resource3", "R3")
 
 
-  await Game.registerRessource(0, R1.address, ONE_PER_MINUTE, 90)
-  await Game.registerRessource(1, R1.address, ONE_PER_MINUTE, 90)
-  await Game.registerRessource(2, R1.address, ONE_PER_MINUTE, 90)
+    const PlanetContract = await ethers.getContractFactory("Planet");
+    Planet = await PlanetContract.deploy()
 
+    const GameContract = await ethers.getContractFactory("Game");
+    Game = await GameContract.deploy(Planet.address);
 
+    const MINTER_ROLE = await Planet.MINTER_ROLE();
+
+    await Planet.grantRole(MINTER_ROLE, Game.address);
+
+    await R1.grantRole(MINTER_ROLE, Game.address);
+    await R2.grantRole(MINTER_ROLE, Game.address);
+    await R3.grantRole(MINTER_ROLE, Game.address);
+
+    console.log("Planet:", Planet.address)
+    console.log("Game:", Game.address)
+
+    await Game.registerRessource(0, R1.address, R1_PER_SEC.toString(), 30, R1_START.toString())
+    await Game.registerRessource(1, R1.address, R2_PER_SEC.toString(), 30, R2_START.toString())
+    await Game.registerRessource(2, R1.address, R3_PER_SEC.toString(), 30, R3_START.toString())
+
+    await Game.newPlanet(FIRST_PLANET);
+    await Game.newPlanet(SECOND_PLANET);
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 // We recommend this pattern to be able to use async/await everywhere

@@ -76,6 +76,10 @@ before(async function () {
 
   await Game.newPlanet(FIRST_PLANET);
   await Game.newPlanet(SECOND_PLANET);
+
+  console.log("Planet:", Planet.address)
+  console.log("Game:", Game.address)
+  
   await setTime(START_TIME)
 });
 

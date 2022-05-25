@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 import { providers, ethers } from "ethers";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
+import GameUtils from "../../../js-lib/index"
 
 let providerOptions = {
   walletconnect: {
@@ -19,6 +20,7 @@ export default createStore({
     account: null,
     login_secret: null,
     askConnection: false,
+    gameLib: null
   },
   getters: {
   },
@@ -33,13 +35,17 @@ export default createStore({
         } else {
           state.account = infos.account;
           state.login_secret = infos.login_secret;
+          state.gameLib = new GameUtils(w3,{ // this re addresses for locl hardhat testnet
+            game: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+            planet: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"
+          })
         }
       } catch (error) {
         console.log(error)
         state.account = null;
         state.login_secret = null;
+        state.gameLib = null;
       }
-      this.dispatch("followedCollections/refreshCollections", null, { root: true });
     },
   },
   actions: {
@@ -71,7 +77,6 @@ export default createStore({
         if (sessionStorage.getItem(`login_secret_${infos.account}`)) {
           infos.login_secret = sessionStorage.getItem(`login_secret_${infos.account}`);
           infos.askConnection = false;
-          context.dispatch("followedCollections/refreshCollections", null, { root: true });
         } else {
           let message = ((`I'm signing this message to log in `));
           const signer = w3.getSigner();
@@ -82,7 +87,9 @@ export default createStore({
             infos.askConnection = false;
           }
         }
+
         console.log(infos)
+
         context.commit("setWeb3", infos)
       } catch (error) {
         console.log(error)
