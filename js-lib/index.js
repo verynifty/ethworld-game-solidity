@@ -30,7 +30,7 @@ GameLib.prototype.searchForPlanet = async function(x, y) {
         }
         size++;
     }
-    return false;
+    return -1;
 }
 
 GameLib.prototype.isValidPlanet = async function(x, y, size) {
