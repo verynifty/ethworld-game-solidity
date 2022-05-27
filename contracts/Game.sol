@@ -24,9 +24,9 @@ contract Game is AccessControl {
     uint256 public constant MAX_STORAGE_BASE = 1000;
     uint256 public constant ONE_PER_MINUTE = 16660000000000000;
 
-    uint128 public DIFFICULTY5 = 100;
+    uint128 public DIFFICULTYd = 150000;
     uint128 public constant UNIVERSE = 666;
-    uint128 public constant MAX_PLANET_SIZE = 1000;
+    uint128 public constant MAX_PLANET_SIZEb = 100000;
 
     event newPlanetMinted(uint256 id);
 
