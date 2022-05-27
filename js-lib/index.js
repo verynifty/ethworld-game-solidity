@@ -59,13 +59,22 @@ GameLib.prototype.getGameConfig = async function () {
     this.DIFFICULTY = (await this.GameContract.DIFFICULTYd()).toNumber()
     this.MAX_PLANET_SIZE = (await this.GameContract.MAX_PLANET_SIZEb()).toNumber()
     console.log(this.DIFFICULTY)
-    this.searchArea(0, 0, 10, 10, function (x, y, size) {
-        if (size == -1) {
-            console.log(x, y, "no planet found")
-        } else {
-            console.log(x, y, "planet found of size", size)
-        }
-    })
+    var Process = function () {
+    }
+    let ctx = this
+    Process.prototype.run = function (stop) {
+        ctx.searchArea(0, 0, 10, 10, function (x, y, size) {
+            if (size == -1) {
+                console.log(x, y, "no planet found")
+            } else {
+                console.log(x, y, "planet found of size", size)
+            }
+        })
+
+    }
+
+    let p = new Process()
+    p.run()
 }
 
 module.exports = GameLib;
