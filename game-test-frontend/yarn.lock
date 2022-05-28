@@ -4427,6 +4427,18 @@
     "picocolors" "^1.0.0"
     "shell-quote" "^1.6.1"
 
+"leaflet-simple-graticule@^1.0.2":
+  "integrity" "sha1-bmhecTRRXOADnWaGJHTUq/B+noc="
+  "resolved" "https://registry.npmjs.org/leaflet-simple-graticule/-/leaflet-simple-graticule-1.0.2.tgz"
+  "version" "1.0.2"
+  dependencies:
+    "leaflet" "^0.7.3"
+
+"leaflet@^0.7.3":
+  "integrity" "sha1-HjUrpU5j0HZFH6NjyQCJDLLPde4="
+  "resolved" "https://registry.npmjs.org/leaflet/-/leaflet-0.7.7.tgz"
+  "version" "0.7.7"
+
 "level-codec@~7.0.0":
   "integrity" "sha512-Ua/R9B9r3RasXdRmOtd+t9TCOEIIlts+TN/7XTT2unhDaL6sJn83S3rUyljbr6lVtw49N3/yA0HHjpV6Kzb2aQ=="
   "resolved" "https://registry.npmjs.org/level-codec/-/level-codec-7.0.1.tgz"

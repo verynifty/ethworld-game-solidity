@@ -6,8 +6,7 @@
 
 <script>
 // @ is an alias to /src
-import AutoGraticule from "leaflet-auto-graticule";
-
+import SimpleGraticule from "leaflet-simple-graticule";
 
 export default {
   name: "MapView",
@@ -35,7 +34,7 @@ export default {
     map.setView([70, 120], 1);
 
     
-    new AutoGraticule().addTo(map);
+    new SimpleGraticule().addTo(map);
 
   },
 };
