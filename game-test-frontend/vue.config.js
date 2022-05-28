@@ -1,5 +1,7 @@
 const webpack = require('webpack');
 
+const ThreadsPlugin = require('threads-plugin')
+
 module.exports = {
     configureWebpack: {
         resolve: {
@@ -21,6 +23,7 @@ module.exports = {
             new webpack.ProvidePlugin({
                 process: 'process/browser',
             }),
+            new ThreadsPlugin()
         ],
     }
   }

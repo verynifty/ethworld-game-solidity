@@ -33,9 +33,16 @@ export default {
 
     map.setView([70, 120], 1);
 
-    
-    new SimpleGraticule().addTo(map);
-
+    new SimpleGraticule({
+      interval: 500,
+      showOriginLabel: true,
+      redraw: "moveend",
+      zoomIntervals: [
+        { start: 0, end: 3, interval: 50 },
+        { start: 4, end: 5, interval: 5 },
+        { start: 6, end: 20, interval: 1 },
+      ],
+    }).addTo(map);
   },
 };
 </script>
