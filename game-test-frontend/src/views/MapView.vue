@@ -8,10 +8,28 @@
 // @ is an alias to /src
 import SimpleGraticule from "leaflet-simple-graticule";
 
+import {BlobWorker, spawn, Thread} from 'threads';
+import WorkerText from '../workers/add'; //May have to @ts-ignore if using TypeScript
+
 export default {
   name: "MapView",
   components: {},
-  mounted: function () {
+  mounted: async function () {
+//Imports
+
+
+//Create a **BLOB WORKER**
+const worker = await spawn(BlobWorker.fromText(WorkerText));
+
+console.log(worker.echo('Hello World!')); //Worker received: Hello World!
+
+//Destroy the worker
+Thread.terminate(worker);
+
+    console.log(`2 + 3 = ${sum}`);
+
+    await Thread.terminate(add);
+
     var map = L.map("map", {
       crs: L.CRS.Simple,
       minZoom: -80,
