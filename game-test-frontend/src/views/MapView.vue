@@ -7,20 +7,17 @@
 <script>
 // @ is an alias to /src
 import SimpleGraticule from "leaflet-simple-graticule";
-import Worker1 from "worker-loader!@/workers/worker1";
 
 export default {
   name: "MapView",
   components: {},
+  data() {
+    return {
+		map:null
+	}
+  },
   mounted: async function () {
-    const worker = new Worker1();
-	console.log(worker)
-    worker.onmeessage = (e) => {
-      const { data } = e;
-      this.reload = data;
-      worker.terminate();
-    };
-    worker.postMessage(20);
+
 
     var map = L.map("map", {
       crs: L.CRS.Simple,
@@ -53,6 +50,22 @@ export default {
         { start: 6, end: 20, interval: 1 },
       ],
     }).addTo(map);
+	this.map = map
+	console.log(this.$store.state)
+	if (this.$store.state.gameLib != null) {
+		let ctx = this;
+		this.$store.state.gameLib.searchArea(10, 10, 20, 20, function(x, y, size) {
+			console.log(x, y, size)
+			if (size == -1) {
+				L.rectangle([[y * 10, x * 10], [y* 10+ 10, x*10+ 10]], {color: "#ff7800", weight: 1}).addTo(ctx.map);
+
+			} else {
+				console.log([y * 10 + 5, x * 10 + 5])
+				L.circle([y * 10 + 5, x * 10], {radius: Math.floor(size /10)}).addTo(ctx.map);
+
+			}
+		})
+	}
   },
 };
 </script>

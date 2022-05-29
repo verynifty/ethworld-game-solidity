@@ -46,7 +46,7 @@ GameLib.prototype.searchForPlanet = async function (x, y) {
 }
 
 GameLib.prototype.isValidPlanet = async function (x, y, size) {
-    await sleep(50)
+    await sleep(1)
     let encodedData = ethers.utils.defaultAbiCoder.encode(["uint256", "uint256", "uint256", "uint256"], [this.UNIVERSE, x, y, size]);
     let encodedHash = ethers.utils.keccak256(encodedData)
     let encodedHashNumber = ethers.BigNumber.from(encodedHash);
@@ -60,19 +60,9 @@ GameLib.prototype.isValidPlanet = async function (x, y, size) {
 GameLib.prototype.getGameConfig = async function () {
     console.log("get game config")
     this.UNIVERSE = (await this.GameContract.UNIVERSE()).toNumber()
-    this.DIFFICULTY = (await this.GameContract.DIFFICULTYd()).toNumber()
-    this.MAX_PLANET_SIZE = (await this.GameContract.MAX_PLANET_SIZEb()).toNumber()
-    console.log(this.DIFFICULTY)
-    var Process = function () {
-    }
-    let ctx = this
-        ctx.searchArea(0, 0, 10, 10, function (x, y, size) {
-            if (size == -1) {
-                console.log(x, y, "no planet found")
-            } else {
-                console.log(x, y, "planet found of size", size)
-            }
-        })
+    this.DIFFICULTY = (await this.GameContract.DIFFICULTYf()).toNumber()
+    this.MAX_PLANET_SIZE = (await this.GameContract.MAX_PLANET_SIZEf()).toNumber()
+    
 
 
 }
