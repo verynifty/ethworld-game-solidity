@@ -24,16 +24,5 @@ module.exports = {
                 process: 'process/browser',
             })
         ],
-        module: {
-            rules: [
-                    {
-                        test: /worker\.js$/,
-                        loader: 'threads-webpack-plugin',
-                        options: {
-                            //Webpack child bundler options
-                        }
-                    }
-                ],
-          },
     }
 }
