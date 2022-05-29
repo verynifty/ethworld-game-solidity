@@ -13,11 +13,15 @@ export default {
   components: {},
   data() {
     return {
-		map:null
-	}
+      map: null,
+    };
   },
   mounted: async function () {
-
+    L.LatLng.prototype.distanceTo = function (currentPostion) {
+      var dx = currentPostion.lng - this.lng;
+      var dy = currentPostion.lat - this.lat;
+      return Math.sqrt(dx * dx + dy * dy);
+    };
 
     var map = L.map("map", {
       crs: L.CRS.Simple,
@@ -29,14 +33,10 @@ export default {
       [50000000000000000, 5000000000000000],
     ];
 
-    var sol = L.latLng([145, 175]);
-    var marker = L.marker(sol).addTo(map);
 
-    sol = L.latLng([0, 0]);
+    let sol = L.latLng([0, 0]);
     L.marker(sol).addTo(map);
 
-    sol = L.latLng([-200, -200]);
-    L.marker(sol).addTo(map);
 
     map.setView([70, 120], 1);
 
@@ -50,22 +50,38 @@ export default {
         { start: 6, end: 20, interval: 1 },
       ],
     }).addTo(map);
-	this.map = map
-	console.log(this.$store.state)
-	if (this.$store.state.gameLib != null) {
-		let ctx = this;
-		this.$store.state.gameLib.searchArea(10, 10, 20, 20, function(x, y, size) {
-			console.log(x, y, size)
-			if (size == -1) {
-				L.rectangle([[y * 10, x * 10], [y* 10+ 10, x*10+ 10]], {color: "#ff7800", weight: 1}).addTo(ctx.map);
-
-			} else {
-				console.log([y * 10 + 5, x * 10 + 5])
-				L.circle([y * 10 + 5, x * 10], {radius: Math.floor(size /10)}).addTo(ctx.map);
-
-			}
-		})
-	}
+    this.map = map;
+    console.log(this.$store.state);
+    if (this.$store.state.gameLib != null) {
+      let ctx = this;
+      this.$store.state.gameLib.searchArea(
+        10,
+        10,
+        40,
+        20,
+        function (x, y, size) {
+          console.log(x, y, size);
+          if (size == -1) {
+            
+            L.rectangle(
+              [
+                [y * 10, x * 10],
+                [y * 10 + 10, x * 10 + 10],
+              ],
+              { color: "#ff7800", weight: 1 }
+            ).addTo(ctx.map);
+          } else {
+           var imageUrl =
+              "/planets/" + ((size % 9) + 1) + ".png",
+              imageBounds = [
+                [y * 10, x * 10],
+                [y * 10 + 10, x * 10 + 10],
+              ];
+            L.imageOverlay(imageUrl, imageBounds).addTo(map);
+          }
+        }
+      );
+    }
   },
 };
 </script>
@@ -77,6 +93,6 @@ export default {
   width: 100%;
   max-width: 100%;
   max-height: 100%;
-  background-color: red;
+  background-color: black;
 }
 </style>

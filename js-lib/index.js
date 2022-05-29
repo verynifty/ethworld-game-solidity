@@ -60,9 +60,12 @@ GameLib.prototype.isValidPlanet = async function (x, y, size) {
 GameLib.prototype.getGameConfig = async function () {
     console.log("get game config")
     this.UNIVERSE = (await this.GameContract.UNIVERSE()).toNumber()
-    this.DIFFICULTY = (await this.GameContract.DIFFICULTYf()).toNumber()
-    this.MAX_PLANET_SIZE = (await this.GameContract.MAX_PLANET_SIZEf()).toNumber()
+    //this.DIFFICULTY = (await this.GameContract.DIFFICULTYj()).toNumber()
+    //this.MAX_PLANET_SIZE = (await this.GameContract.MAX_PLANET_SIZEj()).toNumber()
     
+    this.UNIVERSE = 408
+    this.DIFFICULTY = 5000
+    this.MAX_PLANET_SIZE = 300
 
 
 }
