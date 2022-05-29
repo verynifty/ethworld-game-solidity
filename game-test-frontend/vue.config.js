@@ -1,7 +1,5 @@
 const webpack = require('webpack');
 
-const ThreadsPlugin = require('threads-plugin')
-
 module.exports = {
     configureWebpack: {
         resolve: {
@@ -24,5 +22,18 @@ module.exports = {
                 process: 'process/browser',
             })
         ],
-    }
+    },
+    chainWebpack: config => {
+        config.module
+          .rule('worker-loader')
+          .test(/\.worker\.js$/)
+          .use({
+            loader: 'worker-loader',
+            options: {
+              inline: true
+            }
+          })
+          .loader('worker-loader')
+          .end()
+      }
 }

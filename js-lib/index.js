@@ -5,7 +5,10 @@ const ethers = require('ethers')
 const GameABI = GameArtifact.abi;
 const PlanetABI = PlanetArtifact.abi;
 
-console.log(GameABI)
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function GameLib(provider, addresses) {
     this.ethers = ethers;
     this.addresses = addresses
@@ -43,6 +46,7 @@ GameLib.prototype.searchForPlanet = async function (x, y) {
 }
 
 GameLib.prototype.isValidPlanet = async function (x, y, size) {
+    await sleep(50)
     let encodedData = ethers.utils.defaultAbiCoder.encode(["uint256", "uint256", "uint256", "uint256"], [this.UNIVERSE, x, y, size]);
     let encodedHash = ethers.utils.keccak256(encodedData)
     let encodedHashNumber = ethers.BigNumber.from(encodedHash);
@@ -62,7 +66,6 @@ GameLib.prototype.getGameConfig = async function () {
     var Process = function () {
     }
     let ctx = this
-    Process.prototype.run = function (stop) {
         ctx.searchArea(0, 0, 10, 10, function (x, y, size) {
             if (size == -1) {
                 console.log(x, y, "no planet found")
@@ -71,10 +74,7 @@ GameLib.prototype.getGameConfig = async function () {
             }
         })
 
-    }
 
-    let p = new Process()
-    p.run()
 }
 
 module.exports = GameLib;

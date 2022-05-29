@@ -7,11 +7,20 @@
 <script>
 // @ is an alias to /src
 import SimpleGraticule from "leaflet-simple-graticule";
+import Worker1 from "worker-loader!@/workers/worker1";
 
 export default {
   name: "MapView",
   components: {},
   mounted: async function () {
+    const worker = new Worker1();
+	console.log(worker)
+    worker.onmeessage = (e) => {
+      const { data } = e;
+      this.reload = data;
+      worker.terminate();
+    };
+    worker.postMessage(20);
 
     var map = L.map("map", {
       crs: L.CRS.Simple,

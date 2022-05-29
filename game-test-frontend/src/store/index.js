@@ -4,6 +4,7 @@ import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import GameUtils from "../../../js-lib/index"
 
+
 let providerOptions = {
   walletconnect: {
       package: WalletConnectProvider, // required
