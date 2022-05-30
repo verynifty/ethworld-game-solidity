@@ -93,4 +93,6 @@ export default {
 </script>
 
 <style>
+  @import '@ansur/leaflet-pulse-icon/dist/L.Icon.Pulse.css';
+
 </style>

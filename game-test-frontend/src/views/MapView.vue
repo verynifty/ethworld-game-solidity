@@ -7,6 +7,7 @@
 <script>
 // @ is an alias to /src
 import SimpleGraticule from "leaflet-simple-graticule";
+import pulse from "@ansur/leaflet-pulse-icon/dist/L.Icon.Pulse.js";
 var store = require("store");
 
 export default {
@@ -74,19 +75,27 @@ export default {
         let y = this.miningy;
         startx = x - radius;
         while (startx <= x + radius) {
-			        starty = y - radius;
+          starty = y - radius;
           while (starty <= y + radius) {
-			  console.log("POS", startx, starty, x, y, x + radius, y + radius)
+            // console.log("POS", startx, starty, x, y, x + radius, y + radius);
             if (store.get(startx + "_" + starty) == null) {
+				 var pulsingIcon = L.icon.pulse({
+                iconSize: [20, 20],
+                color: "blue",
+                fillColor: "blue",
+              });
+              var pulsemarker = L.marker([starty * 10 + 5, startx * 10 + 5], { icon: pulsingIcon }).addTo(this.map);
+ 
               let planet = {};
               planet.size = await this.$store.state.gameLib.searchForPlanet(
                 startx,
                 starty
               );
-              console.log(planet, x, y);
+
+             // console.log(planet, x, y);
               planet.x = startx;
               planet.y = starty;
-              if (planet.size == -1) {
+                          if (planet.size == -1) {
                 store.set(planet.x + "_" + planet.y, {
                   type: 0,
                   x: planet.x,
@@ -102,10 +111,12 @@ export default {
                 });
               }
               this.addPlanet(planet.x, planet.y, planet.size);
+			  this.map.removeLayer(pulsemarker)
+
             }
-			starty++
+            starty++;
           }
-		  startx++
+          startx++;
         }
 
         radius++;
