@@ -6425,6 +6425,11 @@
   "resolved" "https://registry.npmjs.org/statuses/-/statuses-2.0.1.tgz"
   "version" "2.0.1"
 
+"store@^2.0.12":
+  "integrity" "sha1-jFNOKguDH3K3X8XxEZhXxE711ZM="
+  "resolved" "https://registry.npmjs.org/store/-/store-2.0.12.tgz"
+  "version" "2.0.12"
+
 "stream-browserify@^3.0.0":
   "integrity" "sha512-H73RAHsVBapbim0tU2JwwOiXUj+fikfiaoYAKHF3VJfA0pe2BCzkhAHBlLG6REzE+2WNZcxOXjK7lkso+9euLA=="
   "resolved" "https://registry.npmjs.org/stream-browserify/-/stream-browserify-3.0.0.tgz"

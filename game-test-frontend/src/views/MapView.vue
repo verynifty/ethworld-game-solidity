@@ -7,6 +7,7 @@
 <script>
 // @ is an alias to /src
 import SimpleGraticule from "leaflet-simple-graticule";
+var store = require("store");
 
 export default {
   name: "MapView",
@@ -14,6 +15,8 @@ export default {
   data() {
     return {
       map: null,
+      miningx: 10,
+      miningy: 10,
     };
   },
   mounted: async function () {
@@ -33,10 +36,8 @@ export default {
       [50000000000000000, 5000000000000000],
     ];
 
-
-    let sol = L.latLng([0, 0]);
+    let sol = L.latLng([100, 100]);
     L.marker(sol).addTo(map);
-
 
     map.setView([70, 120], 1);
 
@@ -52,36 +53,82 @@ export default {
     }).addTo(map);
     this.map = map;
     console.log(this.$store.state);
-    if (this.$store.state.gameLib != null) {
-      let ctx = this;
-      this.$store.state.gameLib.searchArea(
-        10,
-        10,
-        40,
-        20,
-        function (x, y, size) {
-          console.log(x, y, size);
-          if (size == -1) {
-            
-            L.rectangle(
-              [
-                [y * 10, x * 10],
-                [y * 10 + 10, x * 10 + 10],
-              ],
-              { color: "#ff7800", weight: 1 }
-            ).addTo(ctx.map);
-          } else {
-           var imageUrl =
-              "/planets/" + ((size % 9) + 1) + ".png",
-              imageBounds = [
-                [y * 10, x * 10],
-                [y * 10 + 10, x * 10 + 10],
-              ];
-            L.imageOverlay(imageUrl, imageBounds).addTo(map);
+    // Load already mined data
+    let ctx = this;
+    store.each(function (value, key) {
+      console.log(key, "==", value);
+      if (value.type != null) {
+        ctx.addPlanet(value.x, value.y, value.size);
+      }
+    });
+    this.mine();
+  },
+  methods: {
+    mine: async function () {
+      let x = this.miningx;
+      let radius = 0;
+      let startx = 0;
+      let starty = 0;
+      while (true) {
+        let x = this.miningx;
+        let y = this.miningy;
+        startx = x - radius;
+        while (startx <= x + radius) {
+			        starty = y - radius;
+          while (starty <= y + radius) {
+			  console.log("POS", startx, starty, x, y, x + radius, y + radius)
+            if (store.get(startx + "_" + starty) == null) {
+              let planet = {};
+              planet.size = await this.$store.state.gameLib.searchForPlanet(
+                startx,
+                starty
+              );
+              console.log(planet, x, y);
+              planet.x = startx;
+              planet.y = starty;
+              if (planet.size == -1) {
+                store.set(planet.x + "_" + planet.y, {
+                  type: 0,
+                  x: planet.x,
+                  y: planet.y,
+                  size: planet.size,
+                });
+              } else {
+                store.set(planet.x + "_" + planet.y, {
+                  type: 1,
+                  x: planet.x,
+                  y: planet.y,
+                  size: planet.size,
+                });
+              }
+              this.addPlanet(planet.x, planet.y, planet.size);
+            }
+			starty++
           }
+		  startx++
         }
-      );
-    }
+
+        radius++;
+      }
+    },
+    addPlanet: function (x, y, size) {
+      if (size == -1) {
+        L.rectangle(
+          [
+            [y * 10, x * 10],
+            [y * 10 + 10, x * 10 + 10],
+          ],
+          { color: "#ff7800", weight: 1 }
+        ).addTo(this.map);
+      } else {
+        var imageUrl = "/planets/" + ((size % 9) + 1) + ".png",
+          imageBounds = [
+            [y * 10, x * 10],
+            [y * 10 + 10, x * 10 + 10],
+          ];
+        L.imageOverlay(imageUrl, imageBounds).addTo(this.map);
+      }
+    },
   },
 };
 </script>
