@@ -20,6 +20,7 @@
         >
           Settle on planet
         </button>
+		<PlanetView :x="selectedx" :y="selectedy"/>
       </div>
     </div>
   </div>
@@ -28,6 +29,9 @@
 <script>
 // @ is an alias to /src
 import SimpleGraticule from "leaflet-simple-graticule";
+
+import PlanetView from '@/components/planet/PlanetView.vue'
+
 var L = require("leaflet");
 
 require("../pulseIcon.js");
@@ -36,7 +40,7 @@ var store = require("store");
 
 export default {
   name: "MapView",
-  components: {},
+  components: {PlanetView},
   data() {
     return {
       map: null,
@@ -81,7 +85,7 @@ export default {
     // Load already mined data
     let ctx = this;
     store.each(function (value, key) {
-      console.log(key, "==", value);
+      // console.log(key, "==", value);
       if (value.type != null) {
         ctx.addPlanet(value.x, value.y, value.size);
       }
