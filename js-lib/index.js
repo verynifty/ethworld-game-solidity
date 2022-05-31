@@ -13,8 +13,8 @@ function GameLib(provider, addresses) {
     this.ethers = ethers;
     this.addresses = addresses
     console.log("Game Lib initialized", ethers, addresses)
-    this.GameContract = (new ethers.Contract(this.addresses.game, GameABI)).connect(provider);
-    this.PlanetContract = (new ethers.Contract(this.addresses.planet, PlanetABI)).connect(provider);
+    this.GameContract = (new ethers.Contract(this.addresses.game, GameABI, provider));
+    this.PlanetContract = (new ethers.Contract(this.addresses.planet, PlanetABI, provider))
     this.getGameConfig()
 }
 
@@ -63,10 +63,13 @@ GameLib.prototype.isValidPlanet = async function (x, y, size) {
 }
 
 GameLib.prototype.getGameConfig = async function () {
-    console.log("get game config")
     this.UNIVERSE = (await this.GameContract.UNIVERSE()).toNumber()
     this.DIFFICULTY = (await this.GameContract.DIFFICULTY()).toNumber()
     this.MAX_PLANET_SIZE = (await this.GameContract.MAX_PLANET_SIZE()).toNumber()
+}
+
+GameLib.prototype.registerPlanet = async function(x, y, size) {
+    let tx = await this.GameContract.newPlanet(x, y, size);
 }
 
 module.exports = GameLib;

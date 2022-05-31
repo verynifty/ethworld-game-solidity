@@ -37,7 +37,7 @@ export default createStore({
           state.account = infos.account;
           state.login_secret = infos.login_secret;
           state.gameLib = new GameUtils(w3,{ // this re addresses for locl hardhat testnet
-            game: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+            game: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
             planet: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"
           })
         }

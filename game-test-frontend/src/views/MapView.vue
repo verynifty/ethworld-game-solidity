@@ -6,6 +6,7 @@
     <div class="col-span-2">
       <div v-if="selectedx != null">
         Planet {{ selectedx }} / {{ selectedy }}
+		<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" v-on:click="registerPlanet(selectedx, selectedy)">Settle on planet</button>
       </div>
     </div>
   </div>
@@ -13,9 +14,11 @@
 
 <script>
 // @ is an alias to /src
-var L = require("leaflet");
 import SimpleGraticule from "leaflet-simple-graticule";
-import pulse from "@ansur/leaflet-pulse-icon/dist/L.Icon.Pulse.js";
+var L = require("leaflet");
+
+require("../pulseIcon.js")
+
 var store = require("store");
 
 export default {
@@ -41,8 +44,6 @@ export default {
       [50000000000000000, 5000000000000000],
     ];
 
-    let sol = L.latLng([100, 100]);
-    L.marker(sol).bindPopup("kol").addTo(map);
     L.LatLng.prototype.distanceTo = function (currentPostion) {
       var dx = currentPostion.lng - this.lng;
       var dy = currentPostion.lat - this.lat;
@@ -176,6 +177,11 @@ export default {
         overlay.addTo(this.map);
       }
     },
+	registerPlanet: async function(x, y) {
+		console.log("REGISTER PLANET")
+		let planet = store.get(x + "_" + y)
+		this.$store.state.gameLib.registerPlanet(planet.x, planet.y, planet.size)
+	}
   },
 };
 </script>
