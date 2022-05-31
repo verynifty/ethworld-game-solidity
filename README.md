@@ -1,4 +1,7 @@
-![LOGO](https://github.com/verynifty/ethworld-game-solidity/raw/main/website/logo.jpeg){ width=60% }
+
+<p align="center">
+  <img width="460" height="300" src="https://github.com/verynifty/ethworld-game-solidity/raw/main/website/logo.jpeg">
+</p>
 
 # SMART CONTRACTS
 
