@@ -6,7 +6,20 @@
     <div class="col-span-2">
       <div v-if="selectedx != null">
         Planet {{ selectedx }} / {{ selectedy }}
-		<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" v-on:click="registerPlanet(selectedx, selectedy)">Settle on planet</button>
+        <button
+          class="
+            bg-blue-500
+            hover:bg-blue-700
+            text-white
+            font-bold
+            py-2
+            px-4
+            rounded
+          "
+          v-on:click="registerPlanet(selectedx, selectedy)"
+        >
+          Settle on planet
+        </button>
       </div>
     </div>
   </div>
@@ -17,7 +30,7 @@
 import SimpleGraticule from "leaflet-simple-graticule";
 var L = require("leaflet");
 
-require("../pulseIcon.js")
+require("../pulseIcon.js");
 
 var store = require("store");
 
@@ -31,6 +44,7 @@ export default {
       miningy: 10,
       selectedx: null,
       selectedy: null,
+      selectedid: null,
     };
   },
   mounted: async function () {
@@ -75,9 +89,20 @@ export default {
     this.mine();
   },
   methods: {
-    selectPlanet(x, y) {
+    selectPlanet: async function (x, y) {
       this.selectedx = x;
       this.selectedy = y;
+      this.selectedid = await this.$store.state.gameLib.getPlanetID(this.selectedx, this.selectedy);
+	  	  console.log(this.selectedx, this.selectedy, this.selectedid)
+      try {
+        let infos = await this.$store.state.gameLib.getPlanetInfos(
+          this.selectedid
+        );
+		console.log(infos)
+      } catch (error) {
+        console.log(error);
+      }
+      //console.log(infos);
     },
     mine: async function () {
       if (
@@ -177,11 +202,11 @@ export default {
         overlay.addTo(this.map);
       }
     },
-	registerPlanet: async function(x, y) {
-		console.log("REGISTER PLANET")
-		let planet = store.get(x + "_" + y)
-		this.$store.state.gameLib.registerPlanet(planet.x, planet.y, planet.size)
-	}
+    registerPlanet: async function (x, y) {
+      console.log("REGISTER PLANET");
+      let planet = store.get(x + "_" + y);
+      this.$store.state.gameLib.registerPlanet(planet.x, planet.y, planet.size);
+    },
   },
 };
 </script>

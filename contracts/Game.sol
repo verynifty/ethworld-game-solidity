@@ -40,7 +40,11 @@ contract Game is AccessControl {
         mapUtils = MapUtils(_mapUtils);
     }
 
-    function newPlanet(uint256 x, uint256 y, uint256 size) public {
+    function newPlanet(
+        uint256 x,
+        uint256 y,
+        uint256 size
+    ) public {
         uint256 _id = mapUtils.getPlanetId(x, y);
 
         planetRessources[_id][0][3] = block.timestamp;
@@ -53,6 +57,8 @@ contract Game is AccessControl {
         planetRessources[_id][2][0] = ressources[2].startingBalance;
 
         planetNFT.mint(msg.sender, _id);
+           console.log(
+            "UPDATEBL BEFORE/AFTER %s", _id);
         emit newPlanetMinted(_id);
     }
 
@@ -75,11 +81,19 @@ contract Game is AccessControl {
         public
         view
         returns (
+            address owner,
+            uint256 l1,
+            uint256 l2,
+            uint256 l3,
             uint256 r1,
             uint256 r2,
             uint256 r3
         )
     {
+        owner = planetNFT.ownerOf(_planet);
+        l1 = planetRessources[_planet][0][1];
+        l2 = planetRessources[_planet][1][1];
+        l3 = planetRessources[_planet][2][1];
         r1 = getBalance(_planet, 0);
         r2 = getBalance(_planet, 1);
         r3 = getBalance(_planet, 2);
@@ -132,10 +146,7 @@ contract Game is AccessControl {
     function getUpgradeCost(uint256 _ressource, uint256 _level)
         public
         pure
-        returns (
-            uint256 r1,
-            uint256 r2
-        )
+        returns (uint256 r1, uint256 r2)
     {
         uint256 energy;
         if (_ressource == 0) {

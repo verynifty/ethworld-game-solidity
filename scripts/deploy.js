@@ -38,18 +38,27 @@ async function main() {
 
     const BaseERC20RessourceContract = await ethers.getContractFactory("BaseERC20Ressource")
     R1 = await BaseERC20RessourceContract.deploy("Resource1", "R1")
+    await R1.deployed()
     R2 = await BaseERC20RessourceContract.deploy("Resource2", "R2")
+    await R2.deployed()
+
     R3 = await BaseERC20RessourceContract.deploy("Resource3", "R3")
+    await R3.deployed()
+
 
 
     const PlanetContract = await ethers.getContractFactory("Planet");
     Planet = await PlanetContract.deploy()
+    await Planet.deployed()
+
 
     const MapUtilsContract = await ethers.getContractFactory("MapUtils");
     MapUtils = await MapUtilsContract.deploy();
+    await MapUtils.deployed()
 
     const GameContract = await ethers.getContractFactory("Game");
     Game = await GameContract.deploy(Planet.address, MapUtils.address);
+    await Game.deployed()
 
 
 

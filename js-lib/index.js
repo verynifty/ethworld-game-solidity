@@ -1,9 +1,11 @@
 let GameArtifact = require('../artifacts/contracts/Game.sol/Game.json')
 let PlanetArtifact = require('../artifacts/contracts/Planet.sol/Planet.json')
+let MapUtilsArtifact = require('../artifacts/contracts/MapUtils.sol/MapUtils.json')
 
 const ethers = require('ethers')
 const GameABI = GameArtifact.abi;
 const PlanetABI = PlanetArtifact.abi;
+const MapUtilsABI = MapUtilsArtifact.abi
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -13,13 +15,20 @@ function GameLib(provider, addresses) {
     this.ethers = ethers;
     this.addresses = addresses
     console.log("Game Lib initialized", ethers, addresses)
-    this.GameContract = (new ethers.Contract(this.addresses.game, GameABI, provider));
-    this.PlanetContract = (new ethers.Contract(this.addresses.planet, PlanetABI, provider))
+    this.GameContract = (new ethers.Contract(this.addresses.game, GameABI, provider.getSigner()));
+    this.PlanetContract = (new ethers.Contract(this.addresses.planet, PlanetABI, provider.getSigner()))
+    this.MapUtilsContract = (new ethers.Contract("0xa5d6d7389eceb8b71a533f63d024990f1e695ad4", MapUtilsABI, provider.getSigner()))
     this.getGameConfig()
 }
 
 GameLib.prototype.getPlayerPlanets = async function () {
 
+}
+
+GameLib.prototype.getPlanetInfos = async function(id) {
+    console.log("INFOS FROM", id)
+    let infos = await this.GameContract.getPlanetInfos(id);
+    return infos;
 }
 
 GameLib.prototype.searchArea = async function (xStart, yStart, xEnd, yEnd, callBack) {
@@ -43,10 +52,20 @@ GameLib.prototype.searchForPlanet = async function (x, y) {
     return -1;
 }
 
-GameLib.prototype.getPlanetID = function (x, y) {
+GameLib.prototype.getPlanetIDFromContract = async function (x, y) {
+    let res = await this.MapUtilsContract.getPlanetId(x, y)
+    console.log(res.toString())
+    return (res)
+}
+
+GameLib.prototype.getPlanetID = async function (x, y) {
     let encodedData = ethers.utils.defaultAbiCoder.encode(["uint256", "uint256"], [x, y]);
-    let encodedHash = ethers.utils.keccak256(encodedData)
+    console.log(encodedData)
+    encodedData = ethers.utils.arrayify(encodedData)
+    let encodedHash = ethers.utils.sha256(encodedData)
     let encodedHashNumber = ethers.BigNumber.from(encodedHash);
+    console.log(x, y, encodedHashNumber.toString())
+    await this.getPlanetIDFromContract(x, y)
     return(encodedHashNumber.toString())
 }
 
