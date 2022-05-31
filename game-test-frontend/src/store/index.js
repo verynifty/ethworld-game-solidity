@@ -40,10 +40,12 @@ export default createStore({
             game: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
             planet: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"
           })
+          /*
           state.gameLib = new GameUtils(w3,{ // this re addresses for local hardhat testnet
             game: "0x55E2507D3A62c350D64f76343F0C87F4aA779d22",
             planet: "0xEE9d1Ce4abf8b9d4904933edb810945eAeD17b6C"
           })
+          */
           
         }
       } catch (error) {
