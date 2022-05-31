@@ -1,3 +1,5 @@
+![LOGO](https://github.com/verynifty/ethworld-game-solidity/raw/main/website/logo.jpeg){ width=60% }
+
 # SMART CONTRACTS
 
 ## Install
