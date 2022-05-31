@@ -15,8 +15,6 @@ function GameLib(provider, addresses) {
     console.log("Game Lib initialized", ethers, addresses)
     this.GameContract = (new ethers.Contract(this.addresses.game, GameABI)).connect(provider);
     this.PlanetContract = (new ethers.Contract(this.addresses.planet, PlanetABI)).connect(provider);
-
-    console.log("get config")
     this.getGameConfig()
 }
 
@@ -45,6 +43,13 @@ GameLib.prototype.searchForPlanet = async function (x, y) {
     return -1;
 }
 
+GameLib.prototype.getPlanetID = function (x, y) {
+    let encodedData = ethers.utils.defaultAbiCoder.encode(["uint256", "uint256"], [x, y]);
+    let encodedHash = ethers.utils.keccak256(encodedData)
+    let encodedHashNumber = ethers.BigNumber.from(encodedHash);
+    return(encodedHashNumber.toString())
+}
+
 GameLib.prototype.isValidPlanet = async function (x, y, size) {
     await sleep(1)
     let encodedData = ethers.utils.defaultAbiCoder.encode(["uint256", "uint256", "uint256", "uint256"], [this.UNIVERSE, x, y, size]);
@@ -60,14 +65,8 @@ GameLib.prototype.isValidPlanet = async function (x, y, size) {
 GameLib.prototype.getGameConfig = async function () {
     console.log("get game config")
     this.UNIVERSE = (await this.GameContract.UNIVERSE()).toNumber()
-    //this.DIFFICULTY = (await this.GameContract.DIFFICULTYj()).toNumber()
-    //this.MAX_PLANET_SIZE = (await this.GameContract.MAX_PLANET_SIZEj()).toNumber()
-    
-    this.UNIVERSE = 408
-    this.DIFFICULTY = 5000
-    this.MAX_PLANET_SIZE = 300
-
-
+    this.DIFFICULTY = (await this.GameContract.DIFFICULTY()).toNumber()
+    this.MAX_PLANET_SIZE = (await this.GameContract.MAX_PLANET_SIZE()).toNumber()
 }
 
 module.exports = GameLib;

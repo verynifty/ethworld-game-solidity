@@ -1,4 +1,12 @@
 contract MapUtils {
+
+    function getPlanetId(
+        uint256 _x,
+        uint256 _y
+    ) public pure returns (uint256) {
+        return (uint256(sha256(abi.encode(_x, _y))));
+    }
+
     function isValidPlanet(
         bytes memory _data,
         uint128 _difficulty,

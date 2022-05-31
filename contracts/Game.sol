@@ -7,6 +7,7 @@ import "./BaseERC20Ressource.sol";
 
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "./Planet.sol";
+import "./MapUtils.sol";
 
 contract Game is AccessControl {
     struct Ressource {
@@ -24,20 +25,24 @@ contract Game is AccessControl {
     uint256 public constant MAX_STORAGE_BASE = 1000;
     uint256 public constant ONE_PER_MINUTE = 16660000000000000;
 
-    uint128 public DIFFICULTYj = 1200;
+    uint128 public DIFFICULTY = 600;
     uint128 public constant UNIVERSE = 666;
-    uint128 public constant MAX_PLANET_SIZEj = 200;
+    uint128 public constant MAX_PLANET_SIZE = 400;
 
     event newPlanetMinted(uint256 id);
 
     Planet public planetNFT;
+    MapUtils public mapUtils;
 
-    constructor(address _planetNFT) {
+    constructor(address _planetNFT, address _mapUtils) {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
         planetNFT = Planet(_planetNFT);
+        mapUtils = MapUtils(_mapUtils);
     }
 
-    function newPlanet(uint256 _id) public {
+    function newPlanet(uint256 x, uint256 y, uint256 size) public {
+        uint256 _id = mapUtils.getPlanetId(x, y);
+
         planetRessources[_id][0][3] = block.timestamp;
         planetRessources[_id][0][0] = ressources[0].startingBalance;
 

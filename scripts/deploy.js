@@ -45,8 +45,13 @@ async function main() {
     const PlanetContract = await ethers.getContractFactory("Planet");
     Planet = await PlanetContract.deploy()
 
+    const MapUtilsContract = await ethers.getContractFactory("MapUtils");
+    MapUtils = await GameContract.deploy();
+
     const GameContract = await ethers.getContractFactory("Game");
-    Game = await GameContract.deploy(Planet.address);
+    Game = await GameContract.deploy(Planet.address, MapUtils.address);
+
+
 
     const MINTER_ROLE = await Planet.MINTER_ROLE();
 
@@ -63,8 +68,8 @@ async function main() {
     await Game.registerRessource(1, R1.address, R2_PER_SEC.toString(), 30, R2_START.toString())
     await Game.registerRessource(2, R1.address, R3_PER_SEC.toString(), 30, R3_START.toString())
 
-    await Game.newPlanet(FIRST_PLANET);
-    await Game.newPlanet(SECOND_PLANET);
+    await Game.newPlanet(0, 0, 0);
+    await Game.newPlanet(1, 1, 1);
   } catch (error) {
     console.log(error)
   }
