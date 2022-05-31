@@ -1,11 +1,19 @@
 <template>
-  <div class="map">
-    <div id="map"></div>
+  <div class="grid grid-cols-6">
+    <div class="map col-span-4">
+      <div id="map"></div>
+    </div>
+    <div class="col-span-2">
+      <div v-if="selectedx != null">
+        Planet {{ selectedx }} / {{ selectedy }}
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+var L = require("leaflet");
 import SimpleGraticule from "leaflet-simple-graticule";
 import pulse from "@ansur/leaflet-pulse-icon/dist/L.Icon.Pulse.js";
 var store = require("store");
@@ -18,15 +26,11 @@ export default {
       map: null,
       miningx: 10,
       miningy: 10,
+      selectedx: null,
+      selectedy: null,
     };
   },
   mounted: async function () {
-    L.LatLng.prototype.distanceTo = function (currentPostion) {
-      var dx = currentPostion.lng - this.lng;
-      var dy = currentPostion.lat - this.lat;
-      return Math.sqrt(dx * dx + dy * dy);
-    };
-
     var map = L.map("map", {
       crs: L.CRS.Simple,
       minZoom: -80,
@@ -38,10 +42,14 @@ export default {
     ];
 
     let sol = L.latLng([100, 100]);
-    L.marker(sol).addTo(map);
-
+    L.marker(sol).bindPopup("kol").addTo(map);
+    L.LatLng.prototype.distanceTo = function (currentPostion) {
+      var dx = currentPostion.lng - this.lng;
+      var dy = currentPostion.lat - this.lat;
+      return Math.sqrt(dx * dx + dy * dy);
+    };
     map.setView([70, 120], 1);
-
+    /*
     new SimpleGraticule({
       interval: 500,
       showOriginLabel: true,
@@ -52,6 +60,7 @@ export default {
         { start: 6, end: 20, interval: 1 },
       ],
     }).addTo(map);
+	*/
     this.map = map;
     console.log(this.$store.state);
     // Load already mined data
@@ -65,7 +74,17 @@ export default {
     this.mine();
   },
   methods: {
+    selectPlanet(x, y) {
+      this.selectedx = x;
+      this.selectedy = y;
+    },
     mine: async function () {
+      if (
+        this.$store.state.gameLib == null ||
+        this.$store.state.gameLib.DIFFICULTY == null
+      ) {
+        return;
+      }
       let x = this.miningx;
       let radius = 0;
       let startx = 0;
@@ -77,25 +96,31 @@ export default {
         while (startx <= x + radius) {
           starty = y - radius;
           while (starty <= y + radius) {
-            // console.log("POS", startx, starty, x, y, x + radius, y + radius);
-            if (store.get(startx + "_" + starty) == null) {
-				 var pulsingIcon = L.icon.pulse({
+            console.log("POS", startx, starty, x, y, x + radius, y + radius);
+            if (
+              store.get(startx + "_" + starty) == null &&
+              startx >= 0 &&
+              starty >= 0
+            ) {
+              var pulsingIcon = L.icon.pulse({
                 iconSize: [20, 20],
                 color: "blue",
                 fillColor: "blue",
               });
-              var pulsemarker = L.marker([starty * 10 + 5, startx * 10 + 5], { icon: pulsingIcon }).addTo(this.map);
- 
+              var pulsemarker = L.marker([starty * 10 + 5, startx * 10 + 5], {
+                icon: pulsingIcon,
+              }).addTo(this.map);
+
               let planet = {};
               planet.size = await this.$store.state.gameLib.searchForPlanet(
                 startx,
                 starty
               );
 
-             // console.log(planet, x, y);
+              // console.log(planet, x, y);
               planet.x = startx;
               planet.y = starty;
-                          if (planet.size == -1) {
+              if (planet.size == -1) {
                 store.set(planet.x + "_" + planet.y, {
                   type: 0,
                   x: planet.x,
@@ -111,8 +136,7 @@ export default {
                 });
               }
               this.addPlanet(planet.x, planet.y, planet.size);
-			  this.map.removeLayer(pulsemarker)
-
+              this.map.removeLayer(pulsemarker);
             }
             starty++;
           }
@@ -137,7 +161,19 @@ export default {
             [y * 10, x * 10],
             [y * 10 + 10, x * 10 + 10],
           ];
-        L.imageOverlay(imageUrl, imageBounds).addTo(this.map);
+        let overlay = L.imageOverlay(imageUrl, imageBounds, {
+          interactive: true,
+          className: "marki",
+          x: x,
+          y: y,
+        });
+
+        let ctx = this;
+        overlay = overlay.on("click", function (d) {
+          ctx.selectPlanet(d.target.options.x, d.target.options.y);
+        });
+
+        overlay.addTo(this.map);
       }
     },
   },

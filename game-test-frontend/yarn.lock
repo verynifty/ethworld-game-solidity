@@ -4441,10 +4441,15 @@
   dependencies:
     "leaflet" "^0.7.3"
 
-"leaflet@^0.7.3", "leaflet@>=0.7.3":
-  "integrity" "sha1-HjUrpU5j0HZFH6NjyQCJDLLPde4="
+"leaflet@^0.7.3":
+  "integrity" "sha512-H1lR7J5VxhvQJQHlW2UywtxO63zilLrnwVsDvjKeyfntffj63Ml94gCk9YPYWBkiQgxisdiA8aJ30Zoou4VhEA=="
   "resolved" "https://registry.npmjs.org/leaflet/-/leaflet-0.7.7.tgz"
   "version" "0.7.7"
+
+"leaflet@^1.8.0", "leaflet@>=0.7.3":
+  "integrity" "sha512-gwhMjFCQiYs3x/Sf+d49f10ERXaEFCPr+nVTryhAW8DWbMGqJqt9G4XuIaHmFW08zYvhgdzqXGr8AlW8v8dQkA=="
+  "resolved" "https://registry.npmjs.org/leaflet/-/leaflet-1.8.0.tgz"
+  "version" "1.8.0"
 
 "level-codec@~7.0.0":
   "integrity" "sha512-Ua/R9B9r3RasXdRmOtd+t9TCOEIIlts+TN/7XTT2unhDaL6sJn83S3rUyljbr6lVtw49N3/yA0HHjpV6Kzb2aQ=="
