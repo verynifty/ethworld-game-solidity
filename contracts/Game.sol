@@ -107,7 +107,7 @@ contract Game is AccessControl {
             planetRessources[_planet][_ressource][0],
             getBalance(_planet, _ressource)
         );
-
+        
         planetRessources[_planet][_ressource][0] = getBalance(
             _planet,
             _ressource
@@ -142,6 +142,7 @@ contract Game is AccessControl {
                 (33**level * 100)) / 3**level) *
                 (block.timestamp - planetRessources[_planet][_ressource][3])) /
             100;
+        newBalance = newBalance < planetRessources[_planet][_ressource][4] ? newBalance : planetRessources[_planet][_ressource][4];
         return newBalance;
     }
 
