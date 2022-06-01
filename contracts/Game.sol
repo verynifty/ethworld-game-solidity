@@ -49,12 +49,15 @@ contract Game is AccessControl {
 
         planetRessources[_id][0][3] = block.timestamp;
         planetRessources[_id][0][0] = ressources[0].startingBalance;
+        planetRessources[_id][0][4] = 10000 * 1ether;
 
         planetRessources[_id][1][3] = block.timestamp;
         planetRessources[_id][1][0] = ressources[1].startingBalance;
+        planetRessources[_id][1][4] = 10000 * 1ether;
 
         planetRessources[_id][2][3] = block.timestamp;
         planetRessources[_id][2][0] = ressources[2].startingBalance;
+        planetRessources[_id][2][4] = 10000 * 1ether;
 
         planetNFT.mint(msg.sender, _id);
            console.log(
