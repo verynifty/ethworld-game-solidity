@@ -210,12 +210,8 @@ contract Game is AccessControl {
             _ressource,
             planetRessources[_planet][_ressource][1] + 1
         );
-        _ressource != 0
-            ? _useRessourceOrBalance(_planet, 0, r0)
-            : _useRessource(_planet, 0, r0);
-        _ressource != 1
-            ? _useRessourceOrBalance(_planet, 1, r1)
-            : _useRessource(_planet, 1, r1);
+ _useRessource(_planet, 0, r0);
+_useRessource(_planet, 1, r1);
         planetRessources[_planet][_ressource][1] += 1;
     }
 
@@ -225,24 +221,7 @@ contract Game is AccessControl {
         uint256 _amount
     ) internal {
         updateBalance(_planet, _ressource);
-        console.log(
-            "BEFORE/AFTER %s %s",
-            planetRessources[_planet][_ressource][0],
-            _amount
-        );
         planetRessources[_planet][_ressource][0] -= _amount;
-    }
-
-    function _useRessourceOrBalance(
-        uint256 _planet,
-        uint256 _ressource,
-        uint256 _amount
-    ) internal {
-        if (planetRessources[_planet][_ressource][0] > _amount) {
-            planetRessources[_planet][_ressource][0] -= _amount;
-        } else {
-            _useRessource(_planet, _ressource, _amount);
-        }
     }
 
     function exportRessources(

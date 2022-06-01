@@ -119,7 +119,7 @@ export default {
         return 0;
       }
       let res = utils.formatEther(this.balance);
-      res = (+res).toFixed(4);
+      res = (+res).toFixed(2);
       return res;
     },
     cost0: function () {
@@ -135,14 +135,12 @@ export default {
   },
   watch: {
     level: async function () {
-      console.log("LEVEL CHAHHAHAHHAHAHHH");
       let cost = await this.$store.state.gameLib.getUpgradeCost(
         this.ressource,
         this.level + 1
       );
-      this.upgradeCost0 = cost.r1
-      this.upgradeCost1 = cost.r2
-      console.log("COOOOT", cost);
+      this.upgradeCost0 = cost.r0
+      this.upgradeCost1 = cost.r1
     },
   },
 };
