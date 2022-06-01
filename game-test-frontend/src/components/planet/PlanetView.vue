@@ -66,7 +66,6 @@ export default {
       R2Production: null,
       R2Storage: null,
       R2StorageLevel: null,
-
       timer: "",
     };
   },
@@ -79,7 +78,7 @@ export default {
         this.x,
         this.y
       );
-      console.log("GET INFOS", this.x, this.y, this.currentID);
+      //console.log("GET INFOS", this.x, this.y, this.currentID);
       try {
         let infos = await this.$store.state.gameLib.getPlanetInfos(
           this.currentID
@@ -102,6 +101,7 @@ export default {
         this.R2Production = infos.r2[2].toString();
         this.R2Storage = infos.r2[3].toString();
         this.R2StorageLevel = infos.r2[4].toNumber();
+        // console.log(this.R2Storage)
       } catch (error) {
         console.log(error);
       }

@@ -40,7 +40,7 @@
               hover:bg-gray-900
             "
           >
-            Upgrade to level {{ nextlevl }}
+            Upgrade storage to level {{ nextlevl }}
           </div>
         </div>
         <div class="pt-6 pb-8 px-6">
@@ -86,6 +86,7 @@
           </ul>
         </div>
       </div>
+
       <div
         class="
           border border-gray-200
@@ -97,17 +98,19 @@
       >
         <div class="p-6">
           <h2 class="text-lg leading-6 font-medium text-gray-900">
-            {{ name }} Storage level {{ level }}
+            {{ name }} Storage level {{ storageLevel }}
           </h2>
           <p class="mt-4 text-sm text-gray-500">
             You are currently mining {{ perHour }} {{ name }} per hour.
           </p>
           <p class="mt-8">
-            <span class="text-4xl font-extrabold text-gray-900">{{ bal }}</span>
-            <span class="text-base font-medium text-gray-500"></span>
+            <span class="text-4xl font-extrabold text-gray-900">{{
+              storagePercent
+            }}</span>
+            <span class="text-base font-medium text-gray-500">%</span>
           </p>
           <div
-            v-on:click="upgrade"
+            v-on:click="upgradeStorage"
             class="
               mt-8
               block
@@ -122,7 +125,7 @@
               hover:bg-gray-900
             "
           >
-            Upgrade to level {{ nextlevl }}
+            Upgrade to level {{ storageLevel + 1 }}
           </div>
         </div>
         <div class="pt-6 pb-8 px-6">
@@ -145,7 +148,7 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              <span class="text-sm text-gray-500">{{ cost0 }} Food</span>
+              <span class="text-sm text-gray-500">{{ scost0 }} Food</span>
             </li>
 
             <li class="flex space-x-3">
@@ -163,7 +166,7 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              <span class="text-sm text-gray-500">{{ cost1 }} Metal</span>
+              <span class="text-sm text-gray-500">{{ scost1 }} Metal</span>
             </li>
           </ul>
         </div>
@@ -184,11 +187,15 @@ export default {
     productionPerSec: String,
     name: String,
     ressource: Number,
+    storage: String,
+    storageLevel: Number,
   },
   data() {
     return {
       upgradeCost0: 0,
       upgradeCost1: 0,
+      supgradeCost0: 0,
+      supgradeCost1: 0,
     };
   },
   methods: {
@@ -196,13 +203,16 @@ export default {
       console.log("REGISTER PLANET");
       this.$store.state.gameLib.upgradeRessource(this.planet, this.ressource);
     },
+    upgradeStorage: async function () {
+      console.log("REGISTER PLANET");
+      this.$store.state.gameLib.upgradeStorage(this.planet, this.ressource);
+    },
   },
   computed: {
     nextlevl: function () {
       return this.level + 1;
     },
     bal: function () {
-      console.log(this.balance);
       if (this.balance == null) {
         return 0;
       }
@@ -220,6 +230,20 @@ export default {
       res = (+res).toFixed(0);
       return res;
     },
+    scost0: function () {
+      let res = utils.formatEther(this.supgradeCost0);
+      res = (+res).toFixed(0);
+      return res;
+    },
+    scost1: function () {
+      let res = utils.formatEther(this.supgradeCost1);
+      res = (+res).toFixed(0);
+      return res;
+    },
+    storagePercent: function () {
+      let res = BigNumber.from(this.balance).mul(10000).div(this.storage);
+      return res.toNumber() / 100;
+    },
     perHour: function () {
       let res = BigNumber.from(this.productionPerSec)
         .mul(60)
@@ -236,6 +260,15 @@ export default {
       );
       this.upgradeCost0 = cost.r0;
       this.upgradeCost1 = cost.r1;
+    },
+    storageLevel: async function () {
+      let scost = await this.$store.state.gameLib.getUpgradeStorageCost(
+        this.ressource,
+        this.storageLevel + 1
+      );
+      console.log(scost)
+      this.supgradeCost0 = scost.r0;
+      this.supgradeCost1 = scost.r1;
     },
   },
 };

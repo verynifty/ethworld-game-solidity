@@ -161,7 +161,7 @@ contract Game is AccessControl {
             r0 = 1000 * 2**(_level - 1) * 1 ether;
         } else if (_ressource == 1) {
             r0 = 500 * 2**(_level - 1) * 1 ether;
-            r1 = 500 * 2**(_level - 1) * 1 ether;
+            r1 = 250 * 2**(_level - 1) * 1 ether;
         } else if (_ressource == 2) {
             r0 = 1000 * 2**(_level - 1) * 1 ether;
             r1 = 1000 * 2**(_level - 1) * 1 ether;
