@@ -19,8 +19,8 @@ contract Game is AccessControl {
 
     mapping(uint256 => Ressource) public ressources;
 
-    // balance / production level / bonusmultiplier /lasttimeupdated / maxstorage
-    mapping(uint256 => mapping(uint256 => uint256[5])) public planetRessources;
+    // balance / production level / bonusmultiplier /lasttimeupdated / maxstorage / storagelevel
+    mapping(uint256 => mapping(uint256 => uint256[6])) public planetRessources;
 
     uint256 public constant MAX_STORAGE_BASE = 1000;
     uint256 public constant ONE_PER_MINUTE = 16660000000000000;
@@ -49,19 +49,18 @@ contract Game is AccessControl {
 
         planetRessources[_id][0][3] = block.timestamp;
         planetRessources[_id][0][0] = ressources[0].startingBalance;
-        planetRessources[_id][0][4] = 10000 * 1ether;
+        planetRessources[_id][0][4] = 10000 * 1 ether;
 
         planetRessources[_id][1][3] = block.timestamp;
         planetRessources[_id][1][0] = ressources[1].startingBalance;
-        planetRessources[_id][1][4] = 10000 * 1ether;
+        planetRessources[_id][1][4] = 10000 * 1 ether;
 
         planetRessources[_id][2][3] = block.timestamp;
         planetRessources[_id][2][0] = ressources[2].startingBalance;
-        planetRessources[_id][2][4] = 10000 * 1ether;
+        planetRessources[_id][2][4] = 10000 * 1 ether;
 
         planetNFT.mint(msg.sender, _id);
-           console.log(
-            "UPDATEBL BEFORE/AFTER %s", _id);
+        console.log("UPDATEBL BEFORE/AFTER %s", _id);
         emit newPlanetMinted(_id);
     }
 
@@ -146,27 +145,57 @@ contract Game is AccessControl {
         return newBalance;
     }
 
+    function getUpgradeStorageCost(uint256 _ressource, uint256 _level)
+        public
+        pure
+        returns (uint256 r0, uint256 r1)
+    {
+        if (_ressource == 0) {
+            r0 = 1000 * 2**(_level - 1) * 1 ether;
+        } else if (_ressource == 1) {
+            r0 = 500 * 2**(_level - 1) * 1 ether;
+            r1 = 500 * 2**(_level - 1) * 1 ether;
+        } else if (_ressource == 2) {
+            r0 = 1000 * 2**(_level - 1) * 1 ether;
+            r1 = 1000 * 2**(_level - 1) * 1 ether;
+        }
+    }
+
+    function upgradeStorage(uint256 _planet, uint256 _ressource) public {
+        planetRessources[_planet][_ressource][5] += 1;
+        uint256 r0;
+        uint256 r1;
+        (r0, r1) = getUpgradeStorageCost(_ressource, planetRessources[_planet][_ressource][5]);
+        _useRessource(_planet, 0, r0);
+        if (r1 > 0) {
+            _useRessource(_planet, 1, r1);
+        }
+        planetRessources[_planet][_ressource][4] += planetRessources[_planet][
+            _ressource
+        ][4];
+    }
+
     function getUpgradeCost(uint256 _ressource, uint256 _level)
         public
         pure
-        returns (uint256 r1, uint256 r2)
+        returns (uint256 r0, uint256 r1)
     {
         uint256 energy;
         if (_ressource == 0) {
-            r1 = ((60 * (3**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
-            r2 = ((15 * (3**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
+            r0 = ((60 * (3**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
+            r1 = ((15 * (3**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
             energy =
                 ((10 * (11**(_level - 1) * 100)) / 10**(_level - 1)) *
                 10**16;
         } else if (_ressource == 1) {
-            r1 = ((48 * (32**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
-            r2 = ((25 * (32**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
+            r0 = ((48 * (32**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
+            r1 = ((25 * (32**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
             energy =
                 ((10 * (11**(_level - 1) * 100)) / 10**(_level - 1)) *
                 10**16;
         } else if (_ressource == 2) {
-            r1 = ((225 * (3**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
-            r2 = ((75 * (3**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
+            r0 = ((225 * (3**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
+            r1 = ((75 * (3**(_level - 1) * 100)) / 2**(_level - 1)) * 10**16;
             energy =
                 ((20 * (11**(_level - 1) * 100)) / 10**(_level - 1)) *
                 10**16;
@@ -174,18 +203,18 @@ contract Game is AccessControl {
     }
 
     function upgradeRessource(uint256 _planet, uint256 _ressource) public {
+        uint256 r0;
         uint256 r1;
-        uint256 r2;
-        (r1, r2) = getUpgradeCost(
+        (r0, r1) = getUpgradeCost(
             _ressource,
             planetRessources[_planet][_ressource][1] + 1
         );
         _ressource != 0
-            ? _useRessourceOrBalance(_planet, 0, r1)
-            : _useRessource(_planet, 0, r1);
+            ? _useRessourceOrBalance(_planet, 0, r0)
+            : _useRessource(_planet, 0, r0);
         _ressource != 1
-            ? _useRessourceOrBalance(_planet, 1, r2)
-            : _useRessource(_planet, 1, r2);
+            ? _useRessourceOrBalance(_planet, 1, r1)
+            : _useRessource(_planet, 1, r1);
         planetRessources[_planet][_ressource][1] += 1;
     }
 
