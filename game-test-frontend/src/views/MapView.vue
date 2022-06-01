@@ -1,8 +1,10 @@
 <template>
   <div class="grid grid-cols-6">
-    <div class="map col-span-4">
+    <div class="map col-span-6">
       <div id="map"></div>
     </div>
+	    </div>
+
     <div class="col-span-2">
       <div v-if="selectedx != null">
         Planet {{ selectedx }} / {{ selectedy }}
@@ -21,7 +23,6 @@
           Settle on planet
         </button>
 		<PlanetView :x="selectedx" :y="selectedy"/>
-      </div>
     </div>
   </div>
 </template>
@@ -96,16 +97,6 @@ export default {
     selectPlanet: async function (x, y) {
       this.selectedx = x;
       this.selectedy = y;
-      this.selectedid = await this.$store.state.gameLib.getPlanetID(this.selectedx, this.selectedy);
-	  	  console.log(this.selectedx, this.selectedy, this.selectedid)
-      try {
-        let infos = await this.$store.state.gameLib.getPlanetInfos(
-          this.selectedid
-        );
-		console.log(infos)
-      } catch (error) {
-        console.log(error);
-      }
       //console.log(infos);
     },
     mine: async function () {

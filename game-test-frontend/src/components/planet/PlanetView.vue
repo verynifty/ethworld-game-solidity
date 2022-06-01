@@ -1,9 +1,16 @@
 <template>
-  <div>HELLO ff {{ x }}</div>
+  <div>
+    Planet {{ x }}/{{ y }}
+<div class="grid grid-cols-6">
+    <PlanetRessource :ressource="0" :planet="currentID" :balance="R1Balance" :level="R1Level" name="Food" />
+    <PlanetRessource :ressource="1" :planet="currentID" :balance="R2Balance" :level="R2Level" name="Metal" />
+    <PlanetRessource :ressource="2" :planet="currentID" :balance="R2Balance" :level="R2Level" name="Gold" />
+</div>
+  </div>
 </template>
 
 <script>
-import PlanetRessource from '@/components/planet/PlanetRessource.vue'
+import PlanetRessource from "@/components/planet/PlanetRessource.vue";
 
 export default {
   name: "PlanetView",
@@ -12,7 +19,7 @@ export default {
     y: Number,
   },
   components: {
-      PlanetRessource
+    PlanetRessource,
   },
   data() {
     return {
@@ -23,36 +30,46 @@ export default {
       R2Level: null,
       R3Balance: null,
       R3Level: null,
+      timer: ''
     };
   },
   methods: {
+       cancelAutoUpdate () {
+            clearInterval(this.timer);
+        },
     loadData: async function () {
       this.currentID = await this.$store.state.gameLib.getPlanetID(
         this.x,
         this.y
       );
-      console.log(this.x, this.y, this.currentID);
+      console.log("GET INFOS", this.x, this.y, this.currentID);
       try {
         let infos = await this.$store.state.gameLib.getPlanetInfos(
           this.currentID
         );
-        this.R1Balance = info.r1.toString();
-        this.R1Level = info.l1.toString();
-        this.R2Balance = info.r2.toString();
-        this.R2Level = info.l2.toString();
-        this.R3Balance = info.r3.toString();
-        this.R3Level = info.l3.toString();
-        console.log(infos);
+
+        this.R1Balance = infos.r1;
+        this.R1Level = infos.l1;
+        this.R2Balance = infos.r2;
+        this.R2Level = infos.l2;
+        this.R3Balance = infos.r3;
+        this.R3Level = infos.l3;
       } catch (error) {
         console.log(error);
       }
     },
   },
   computed: {},
+  created () {
+        this.timer = setInterval(this.loadData, 2000);
+    },
+    beforeDestroy () {
+      this.cancelAutoUpdate();
+    },
   watch: {
-    x: function () {
+    x: async function () {
       console.log("HHHHH");
-      console.log(this.x);
+      await this.loadData();
     },
   },
 };

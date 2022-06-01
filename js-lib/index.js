@@ -93,4 +93,8 @@ GameLib.prototype.registerPlanet = async function(x, y, size) {
     let tx = await this.GameContract.newPlanet(x, y, size);
 }
 
+GameLib.prototype.upgradeRessource = async function(planet, ressource) {
+    let tx = await this.GameContract.upgradeRessource(planet, ressource);
+}
+
 module.exports = GameLib;
