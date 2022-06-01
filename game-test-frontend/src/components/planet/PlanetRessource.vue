@@ -1,5 +1,5 @@
 <template>
-  <div class="col-span-2 mt-12 space-y-2">
+  <div class="col-span-2 mt-12 space-x-2 space-y-2">
     <div
       v-if="balance != null"
       class="
