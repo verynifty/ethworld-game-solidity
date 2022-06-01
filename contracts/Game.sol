@@ -84,27 +84,23 @@ contract Game is AccessControl {
         view
         returns (
             address owner,
-            uint256 l1,
-            uint256 l2,
-            uint256 l3,
-            uint256 r1,
-            uint256 r2,
-            uint256 r3,
-            uint256 p1,
-            uint256 p2,
-            uint256 p3
+            uint256[5] memory r0,
+            uint256[5] memory r1,
+            uint256[5] memory r2
         )
     {
         owner = planetNFT.ownerOf(_planet);
-        l1 = planetRessources[_planet][0][1];
-        l2 = planetRessources[_planet][1][1];
-        l3 = planetRessources[_planet][2][1];
-        r1 = getBalance(_planet, 0);
-        r2 = getBalance(_planet, 1);
-        r3 = getBalance(_planet, 2);
-        p1 = getProductionPerSeconds(0, planetRessources[_planet][0][1]);
-        p2 = getProductionPerSeconds(1, planetRessources[_planet][1][1]);
-        p3 = getProductionPerSeconds(2, planetRessources[_planet][2][1]);
+        r0[0] = planetRessources[_planet][0][1];
+        r0[1] = getBalance(_planet, 0);
+        r0[2] = getProductionPerSeconds(0, planetRessources[_planet][0][1]);
+
+        r1[0] = planetRessources[_planet][1][1];
+        r1[1] = getBalance(_planet, 1);
+        r1[2] = getProductionPerSeconds(1, planetRessources[_planet][1][1]);
+
+        r2[0] = planetRessources[_planet][2][1];
+        r2[1] = getBalance(_planet, 2);
+        r2[2] = getProductionPerSeconds(0, planetRessources[_planet][2][1]);
     }
 
     function updateBalance(uint256 _planet, uint256 _ressource) public {
@@ -153,7 +149,8 @@ contract Game is AccessControl {
             );
         }
         uint256 perSec = getProductionPerSeconds(_ressource, level);
-        uint256 newBalance = planetRessources[_planet][_ressource][0] + perSec *
+        uint256 newBalance = planetRessources[_planet][_ressource][0] +
+            perSec *
             (block.timestamp - planetRessources[_planet][_ressource][3]);
         newBalance = newBalance < planetRessources[_planet][_ressource][4]
             ? newBalance
