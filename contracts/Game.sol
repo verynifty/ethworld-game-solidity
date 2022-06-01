@@ -89,7 +89,10 @@ contract Game is AccessControl {
             uint256 l3,
             uint256 r1,
             uint256 r2,
-            uint256 r3
+            uint256 r3,
+            uint256 p1,
+            uint256 p2,
+            uint256 p3
         )
     {
         owner = planetNFT.ownerOf(_planet);
@@ -99,6 +102,9 @@ contract Game is AccessControl {
         r1 = getBalance(_planet, 0);
         r2 = getBalance(_planet, 1);
         r3 = getBalance(_planet, 2);
+        p1 = getProductionPerSeconds(0, planetRessources[_planet][0][1]);
+        p2 = getProductionPerSeconds(1, planetRessources[_planet][1][1]);
+        p3 = getProductionPerSeconds(2, planetRessources[_planet][2][1]);
     }
 
     function updateBalance(uint256 _planet, uint256 _ressource) public {
@@ -107,12 +113,24 @@ contract Game is AccessControl {
             planetRessources[_planet][_ressource][0],
             getBalance(_planet, _ressource)
         );
-        
+
         planetRessources[_planet][_ressource][0] = getBalance(
             _planet,
             _ressource
         );
         planetRessources[_planet][_ressource][3] = block.timestamp;
+    }
+
+    function getProductionPerSeconds(uint256 _ressource, uint256 _level)
+        public
+        view
+        returns (uint256)
+    {
+        // balance = (BASEPRODUCTION * LEVEL * 1.1 ^ LEVEL)
+        _level = _level + 1;
+        uint256 res = ressources[_ressource].baseProductionPerSecond *
+            ((_level * 11**_level) / (10**_level));
+        return res;
     }
 
     function getBalance(uint256 _planet, uint256 _ressource)
@@ -134,15 +152,12 @@ contract Game is AccessControl {
                 block.timestamp - planetRessources[_planet][_ressource][3]
             );
         }
-        console.log("PERSEC %s, : ", planetRessources[_planet][_ressource][0]);
-        // balance = balance + (BASEPRODUCTION * LEVEL * 1.1 ^ LEVEL)
-        uint256 newBalance = planetRessources[_planet][_ressource][0] +
-            (((ressources[_ressource].baseProductionPerSecond *
-                (level) *
-                (33**level * 100)) / 3**level) *
-                (block.timestamp - planetRessources[_planet][_ressource][3])) /
-            100;
-        newBalance = newBalance < planetRessources[_planet][_ressource][4] ? newBalance : planetRessources[_planet][_ressource][4];
+        uint256 perSec = getProductionPerSeconds(_ressource, level);
+        uint256 newBalance = planetRessources[_planet][_ressource][0] + perSec *
+            (block.timestamp - planetRessources[_planet][_ressource][3]);
+        newBalance = newBalance < planetRessources[_planet][_ressource][4]
+            ? newBalance
+            : planetRessources[_planet][_ressource][4];
         return newBalance;
     }
 
@@ -166,7 +181,10 @@ contract Game is AccessControl {
         planetRessources[_planet][_ressource][5] += 1;
         uint256 r0;
         uint256 r1;
-        (r0, r1) = getUpgradeStorageCost(_ressource, planetRessources[_planet][_ressource][5]);
+        (r0, r1) = getUpgradeStorageCost(
+            _ressource,
+            planetRessources[_planet][_ressource][5]
+        );
         _useRessource(_planet, 0, r0);
         if (r1 > 0) {
             _useRessource(_planet, 1, r1);
@@ -210,8 +228,8 @@ contract Game is AccessControl {
             _ressource,
             planetRessources[_planet][_ressource][1] + 1
         );
- _useRessource(_planet, 0, r0);
-_useRessource(_planet, 1, r1);
+        _useRessource(_planet, 0, r0);
+        _useRessource(_planet, 1, r1);
         planetRessources[_planet][_ressource][1] += 1;
     }
 

@@ -14,7 +14,7 @@
           {{ name }} level {{ level }}
         </h2>
         <p class="mt-4 text-sm text-gray-500">
-          You are currently mining 2 {{ name }} per seconds.
+          You are currently mining {{perHour}} {{ name }} per seconds.
         </p>
         <p class="mt-8">
           <span class="text-4xl font-extrabold text-gray-900">{{ bal }}</span>
@@ -86,14 +86,15 @@
 </template>
 
 <script>
-import { utils } from "ethers";
+import { utils, BigNumber } from "ethers";
 
 export default {
   name: "PlanetRessource",
   props: {
-    balance: Object,
+    balance: String,
     level: Number,
     planet: String,
+    productionPerSec: String,
     name: String,
     ressource: Number,
   },
@@ -132,6 +133,10 @@ export default {
       res = (+res).toFixed(4);
       return res;
     },
+    perHour: function() {
+        let res = BigNumber.from(this.productionPerSec).mul(60).mul(60).div("1000000000000000000")
+        return res.toString()
+    }
   },
   watch: {
     level: async function () {

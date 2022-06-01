@@ -36,17 +36,17 @@ export default createStore({
         } else {
           state.account = infos.account;
           state.login_secret = infos.login_secret;
-          /*
+          
           state.gameLib = new GameUtils(w3,{ // this re addresses for local hardhat testnet
             game: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
             planet: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"
           })
-          */
+          /*
           state.gameLib = new GameUtils(w3,{ // this re addresses for local hardhat testnet
             game: "0xBF67c8CD9e86cfb89f44dD30DE49CE221da47258",
             planet: "0x6DE579744CC806a838648371838bdCDF3a95CF11"
           })
-          
+          */
           
         }
       } catch (error) {
