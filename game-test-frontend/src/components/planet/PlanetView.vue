@@ -4,7 +4,7 @@
 <div class="grid grid-cols-6">
     <PlanetRessource :ressource="0" :planet="currentID" :balance="R1Balance" :level="R1Level" name="Food" />
     <PlanetRessource :ressource="1" :planet="currentID" :balance="R2Balance" :level="R2Level" name="Metal" />
-    <PlanetRessource :ressource="2" :planet="currentID" :balance="R2Balance" :level="R2Level" name="Gold" />
+    <PlanetRessource :ressource="2" :planet="currentID" :balance="R3Balance" :level="R3Level" name="Gold" />
 </div>
   </div>
 </template>
@@ -49,11 +49,11 @@ export default {
         );
 
         this.R1Balance = infos.r1;
-        this.R1Level = infos.l1;
+        this.R1Level = infos.l1.toNumber();
         this.R2Balance = infos.r2;
-        this.R2Level = infos.l2;
+        this.R2Level = infos.l2.toNumber();
         this.R3Balance = infos.r3;
-        this.R3Level = infos.l3;
+        this.R3Level = infos.l3.toNumber();
       } catch (error) {
         console.log(error);
       }

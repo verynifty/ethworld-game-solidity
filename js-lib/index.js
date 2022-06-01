@@ -97,4 +97,9 @@ GameLib.prototype.upgradeRessource = async function(planet, ressource) {
     let tx = await this.GameContract.upgradeRessource(planet, ressource);
 }
 
+GameLib.prototype.getUpgradeCost = async function(ressource, level) {
+    let res = await this.GameContract.getUpgradeCost(ressource, level);
+    return res;
+}
+
 module.exports = GameLib;

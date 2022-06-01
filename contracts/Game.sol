@@ -205,7 +205,7 @@ contract Game is AccessControl {
         uint256 _ressource,
         uint256 _amount
     ) internal {
-        if (planetRessources[_planet][_ressource][0] > 0) {
+        if (planetRessources[_planet][_ressource][0] > _amount) {
             planetRessources[_planet][_ressource][0] -= _amount;
         } else {
             _useRessource(_planet, _ressource, _amount);

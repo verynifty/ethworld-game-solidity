@@ -11,7 +11,7 @@
     >
       <div class="p-6">
         <h2 class="text-lg leading-6 font-medium text-gray-900">
-          {{ name }} level {{ levl }}
+          {{ name }} level {{ level }}
         </h2>
         <p class="mt-4 text-sm text-gray-500">
           You are currently mining 2 {{ name }} per seconds.
@@ -21,7 +21,7 @@
           <span class="text-base font-medium text-gray-500"></span>
         </p>
         <div
-        v-on:click="upgrade"
+          v-on:click="upgrade"
           class="
             mt-8
             block
@@ -35,8 +35,9 @@
             text-white text-center
             hover:bg-gray-900
           "
-          >Upgrade to level {{ nextlevl }}</div
         >
+          Upgrade to level {{ nextlevl }}
+        </div>
       </div>
       <div class="pt-6 pb-8 px-6">
         <h3 class="text-xs font-medium text-gray-900 tracking-wide uppercase">
@@ -58,7 +59,7 @@
                 clip-rule="evenodd"
               />
             </svg>
-            <span class="text-sm text-gray-500">200 Food</span>
+            <span class="text-sm text-gray-500">{{cost0}} Food</span>
           </li>
 
           <li class="flex space-x-3">
@@ -76,7 +77,7 @@
                 clip-rule="evenodd"
               />
             </svg>
-            <span class="text-sm text-gray-500">100 Metal</span>
+            <span class="text-sm text-gray-500">{{cost1}} Metal</span>
           </li>
         </ul>
       </div>
@@ -91,14 +92,15 @@ export default {
   name: "PlanetRessource",
   props: {
     balance: Object,
-    level: Object,
+    level: Number,
     planet: String,
     name: String,
-    ressource: Number
+    ressource: Number,
   },
   data() {
     return {
-
+      upgradeCost0: 0,
+      upgradeCost1: 0,
     };
   },
   methods: {
@@ -108,11 +110,8 @@ export default {
     },
   },
   computed: {
-    levl: function () {
-      return this.level.toNumber();
-    },
     nextlevl: function () {
-      return this.level.toNumber() + 1;
+      return this.level + 1;
     },
     bal: function () {
       console.log(this.balance);
@@ -123,8 +122,29 @@ export default {
       res = (+res).toFixed(4);
       return res;
     },
+    cost0: function () {
+      let res = utils.formatEther(this.upgradeCost0);
+      res = (+res).toFixed(4);
+      return res;
+    },
+     cost1: function () {
+      let res = utils.formatEther(this.upgradeCost1);
+      res = (+res).toFixed(4);
+      return res;
+    },
   },
-  watch: {},
+  watch: {
+    level: async function () {
+      console.log("LEVEL CHAHHAHAHHAHAHHH");
+      let cost = await this.$store.state.gameLib.getUpgradeCost(
+        this.ressource,
+        this.level + 1
+      );
+      this.upgradeCost0 = cost.r1
+      this.upgradeCost1 = cost.r2
+      console.log("COOOOT", cost);
+    },
+  },
 };
 </script>
 
