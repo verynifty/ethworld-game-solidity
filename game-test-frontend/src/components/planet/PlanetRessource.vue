@@ -3,16 +3,11 @@
 </template>
 
 <script>
-import PlanetRessource from '@/components/planet/PlanetRessource.vue'
-
 export default {
-  name: "PlanetView",
+  name: "PlanetRessource",
   props: {
     x: Number,
     y: Number,
-  },
-  components: {
-      PlanetRessource
   },
   data() {
     return {
