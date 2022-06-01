@@ -93,14 +93,20 @@ contract Game is AccessControl {
         r0[0] = planetRessources[_planet][0][1];
         r0[1] = getBalance(_planet, 0);
         r0[2] = getProductionPerSeconds(0, planetRessources[_planet][0][1]);
+        r0[3] = planetRessources[_planet][0][4];
+        r0[4] = planetRessources[_planet][0][5];
 
         r1[0] = planetRessources[_planet][1][1];
         r1[1] = getBalance(_planet, 1);
         r1[2] = getProductionPerSeconds(1, planetRessources[_planet][1][1]);
+        r1[3] = planetRessources[_planet][1][4];
+        r1[4] = planetRessources[_planet][1][5];
 
         r2[0] = planetRessources[_planet][2][1];
         r2[1] = getBalance(_planet, 2);
         r2[2] = getProductionPerSeconds(0, planetRessources[_planet][2][1]);
+        r2[3] = planetRessources[_planet][2][4];
+        r2[4] = planetRessources[_planet][2][5];
     }
 
     function updateBalance(uint256 _planet, uint256 _ressource) public {
@@ -135,23 +141,11 @@ contract Game is AccessControl {
         returns (uint256)
     {
         uint256 level = planetRessources[_planet][_ressource][1] + 1;
-        if (_ressource == 0) {
-            console.log("Balance: ", planetRessources[_planet][_ressource][0]);
-            console.log("Level: ", planetRessources[_planet][_ressource][1]);
-            console.log("Bonus: ", planetRessources[_planet][_ressource][2]);
-            console.log(
-                "Last time: ",
-                planetRessources[_planet][_ressource][3]
-            );
-            console.log(
-                "Time elapsed: %s",
-                block.timestamp - planetRessources[_planet][_ressource][3]
-            );
-        }
         uint256 perSec = getProductionPerSeconds(_ressource, level);
         uint256 newBalance = planetRessources[_planet][_ressource][0] +
             perSec *
             (block.timestamp - planetRessources[_planet][_ressource][3]);
+        // Check is storage limit is not reached
         newBalance = newBalance < planetRessources[_planet][_ressource][4]
             ? newBalance
             : planetRessources[_planet][_ressource][4];

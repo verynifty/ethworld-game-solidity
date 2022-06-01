@@ -49,9 +49,7 @@
           "
         >
           <router-link class="mr-5 hover:text-white" to="/">Main</router-link>
-                    <router-link class="mr-5 hover:text-white" to="/map"
-            >Map</router-link
-          >
+          <router-link class="mr-5 hover:text-white" to="/map">Map</router-link>
           <router-link class="mr-5 hover:text-white" to="/about"
             >About</router-link
           >
@@ -72,7 +70,7 @@
             md:mt-0
           "
         >
-         <ConnectButton />
+          <ConnectButton />
         </button>
       </div>
     </header>
@@ -82,17 +80,17 @@
 </template>
 
 <script>
-import ConnectButton from '@/components/web3/ConnectButton.vue'
+import ConnectButton from "@/components/web3/ConnectButton.vue";
+
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-   ConnectButton
-  }
-}
+    ConnectButton,
+  },
+};
 </script>
 
 <style>
-  @import '@ansur/leaflet-pulse-icon/dist/L.Icon.Pulse.css';
-
+@import "@ansur/leaflet-pulse-icon/dist/L.Icon.Pulse.css";
 </style>

@@ -11,13 +11,13 @@
       >
         <div class="p-6">
           <h2 class="text-lg leading-6 font-medium text-gray-900">
-            {{ name }} level {{ level }}
+            {{ ressources[ressource].name }}  level {{ level }}
           </h2>
           <p class="mt-4 text-sm text-gray-500">
-            You are currently mining {{ perHour }} {{ name }} per hour.
+            You are currently mining {{ perHour }} {{ ressources[ressource].symbol }} per hour.
           </p>
           <p class="mt-8">
-            <span class="text-4xl font-extrabold text-gray-900">{{ bal }}</span>
+            <span class="text-4xl font-extrabold text-gray-900">{{ bal }} {{ ressources[ressource].symbol }}</span>
             <span class="text-base font-medium text-gray-500"></span>
           </p>
           <div
@@ -92,7 +92,7 @@
       >
         <div class="p-6">
           <h2 class="text-lg leading-6 font-medium text-gray-900">
-            {{ name }} level {{ level }}
+            {{ name }} Storage level {{ level }}
           </h2>
           <p class="mt-4 text-sm text-gray-500">
             You are currently mining {{ perHour }} {{ name }} per hour.

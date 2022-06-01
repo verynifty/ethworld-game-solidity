@@ -7,10 +7,10 @@ import GameUtils from "../../../js-lib/index"
 
 let providerOptions = {
   walletconnect: {
-      package: WalletConnectProvider, // required
-      options: {
-          infuraId: "412acf21edf5444a8c9f6bd737cf8ca2", // required
-      },
+    package: WalletConnectProvider, // required
+    options: {
+      infuraId: "412acf21edf5444a8c9f6bd737cf8ca2", // required
+    },
   },
 };
 
@@ -21,7 +21,7 @@ export default createStore({
     account: null,
     login_secret: null,
     askConnection: false,
-    gameLib: null
+    gameLib: null,
   },
   getters: {
   },
@@ -36,8 +36,10 @@ export default createStore({
         } else {
           state.account = infos.account;
           state.login_secret = infos.login_secret;
-          
-          state.gameLib = new GameUtils(w3,{ // this re addresses for local hardhat testnet
+          w3.on("block", (blockNum) => {
+            console.log("BLOOOCK", blockNum + ": " + new Date(Date.now()))
+          })
+          state.gameLib = new GameUtils(w3, { // this re addresses for local hardhat testnet
             game: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
             planet: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"
           })
@@ -47,7 +49,7 @@ export default createStore({
             planet: "0x6DE579744CC806a838648371838bdCDF3a95CF11"
           })
           */
-          
+
         }
       } catch (error) {
         console.log(error)
