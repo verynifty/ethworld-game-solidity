@@ -17,7 +17,20 @@ contract Game is AccessControl {
         uint256 startingBalance;
     }
 
+    struct PlanetInfos {
+        uint256 x;
+        uint256 y;
+        uint256 size;
+        uint256 energyProduced;
+        uint256 energyConsumed;
+       // mapping(uint256 => uint256) buildingLevel;
+    }
+
     mapping(uint256 => Ressource) public ressources;
+
+    mapping(uint256 => PlanetInfos) public planetInfos;
+    mapping(uint256 => mapping(uint256 => uint256[2])) public planetBuildings;
+
 
     // balance / production level / bonusmultiplier /lasttimeupdated / maxstorage / storagelevel
     mapping(uint256 => mapping(uint256 => uint256[6])) public planetRessources;
@@ -61,6 +74,14 @@ contract Game is AccessControl {
 
         planetNFT.mint(msg.sender, _id);
         console.log("UPDATEBL BEFORE/AFTER %s", _id);
+
+        planetInfos[_id] = PlanetInfos(
+            x,
+            y,
+            size,
+            100,
+            0
+        );
         emit newPlanetMinted(_id);
     }
 
