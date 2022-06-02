@@ -10,15 +10,16 @@
           m-2
         "
       >
-        <div class="p-6">
+        <div class="p-6 relative">
           <h2 class="text-lg leading-6 font-medium text-gray-900">
-            {{ ressources[ressource].name }} level {{ level }}
+            {{ ressources[ressource].name }} 
           </h2>
+          <div class="absolute right-6 top-6 bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded ">level {{ level }}</div>
           <p class="mt-4 text-sm text-gray-500">
             You are currently mining {{ perHour }}
             {{ ressources[ressource].symbol }} per hour.
           </p>
-          <p class="mt-8">
+          <p class="mt-8 text-center">
             <span class="text-4xl font-extrabold text-gray-900"
               >{{ bal }} {{ ressources[ressource].symbol }}</span
             >
@@ -96,14 +97,16 @@
           m-2
         "
       >
-        <div class="p-6">
+        <div class="p-6 relative">
           <h2 class="text-lg leading-6 font-medium text-gray-900">
             {{ name }} Storage level {{ storageLevel }}
           </h2>
+         <div class="absolute right-6 top-6 bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded ">level {{ storageLevel }}</div>
+
           <p class="mt-4 text-sm text-gray-500">
             You are currently mining {{ perHour }} {{ name }} per hour.
           </p>
-          <p class="mt-8">
+          <p class="mt-8 text-center">
             <span class="text-4xl font-extrabold text-gray-900">{{
               storagePercent
             }}</span>

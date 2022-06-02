@@ -31,14 +31,16 @@ export default createStore({
     },
     setWeb3: async function (state, infos) {
       try {
-        if (infos == null || infos.login_secret == null) {
+        if (infos == null) {
           throw 'force_disconnect'
         } else {
           state.account = infos.account;
           state.login_secret = infos.login_secret;
+          /*
           w3.on("block", (blockNum) => {
             console.log("BLOOOCK", blockNum + ": " + new Date(Date.now()))
           })
+          */
           state.gameLib = new GameUtils(w3, { // this re addresses for local hardhat testnet
             game: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
             planet: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"
@@ -52,7 +54,7 @@ export default createStore({
 
         }
       } catch (error) {
-        console.log(error)
+        // console.log(error)
         state.account = null;
         state.login_secret = null;
         state.gameLib = null;
@@ -72,7 +74,7 @@ export default createStore({
           providerOptions // required
         });
         console.log("connect mutation")
-        if (opt.clearCache == true || true) {
+        if (opt.clearCache == true) {
           web3Modal.clearCachedProvider();
         }
         if (opt.tryFromCache == true && !web3Modal.cachedProvider) {
@@ -84,7 +86,8 @@ export default createStore({
           login_secret: null,
           account: provider.selectedAddress,
         }
-        console.log(sessionStorage.getItem(`login_secret_${infos.account}`))
+        /*
+
         if (sessionStorage.getItem(`login_secret_${infos.account}`)) {
           infos.login_secret = sessionStorage.getItem(`login_secret_${infos.account}`);
           infos.askConnection = false;
@@ -98,6 +101,11 @@ export default createStore({
             infos.askConnection = false;
           }
         }
+
+        */
+
+        infos.askConnection = false;
+
 
         console.log(infos)
 

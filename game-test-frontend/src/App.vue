@@ -88,6 +88,12 @@ export default {
   components: {
     ConnectButton,
   },
+  created: function() {
+    console.log("CREATYED")
+    this.$store.dispatch("connect", {
+      tryFromCache: true
+    });
+  }
 };
 </script>
 
