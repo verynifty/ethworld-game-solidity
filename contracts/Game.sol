@@ -31,7 +31,9 @@ contract Game is AccessControl {
     mapping(uint256 => PlanetInfos) public planetInfos;
     mapping(uint256 => mapping(uint256 => uint256)) public planetBuildings;
     // 0: basic energy (solar plant)
-    // 1:
+    // 1: research laboratory
+    // 2 energy laboratory
+    // 3: 
 
     // balance / production level / bonusmultiplier /lasttimeupdated / maxstorage / storagelevel
     mapping(uint256 => mapping(uint256 => uint256[6])) public planetRessources;
@@ -76,7 +78,7 @@ contract Game is AccessControl {
         planetNFT.mint(msg.sender, _id);
         console.log("UPDATEBL BEFORE/AFTER %s", _id);
 
-        planetInfos[_id] = PlanetInfos(x, y, size, 100, 0);
+        planetInfos[_id] = PlanetInfos(x, y, size, 500, 0);
         emit newPlanetMinted(_id);
     }
 
@@ -126,12 +128,6 @@ contract Game is AccessControl {
     }
 
     function updateBalance(uint256 _planet, uint256 _ressource) public {
-        console.log(
-            "UPDATEBL BEFORE/AFTER %s %s",
-            planetRessources[_planet][_ressource][0],
-            getBalance(_planet, _ressource)
-        );
-
         planetRessources[_planet][_ressource][0] = getBalance(
             _planet,
             _ressource
@@ -198,7 +194,9 @@ contract Game is AccessControl {
         {
             r0 = (75 * 3**_level) / 2**_level;
             r1 = (30 * 3**_level) / 2**_level;
-        } else if (_building == 1) {}
+        } else if (_building == 1) {
+
+        }
     }
 
     function makeBuilding(uint256 _planet, uint256 _building) public {
@@ -216,6 +214,9 @@ contract Game is AccessControl {
         }
         if (r2 > 0) {
             _useRessource(_planet, 2, r2);
+        }
+        if (_building == 0) {
+            planetInfos[_planet].energyProduced += (currentLevel + 1) * 100;
         }
         planetInfos[_planet].energyConsumed += energy;
         planetBuildings[_planet][_building] = currentLevel + 1;
@@ -264,6 +265,7 @@ contract Game is AccessControl {
                 10**16;
         }
     }
+
 
     function upgradeRessource(uint256 _planet, uint256 _ressource) public {
         uint256 r0;
