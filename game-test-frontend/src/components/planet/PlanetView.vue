@@ -10,7 +10,6 @@
         :storage="R0Storage"
         :storageLevel="R0StorageLevel"
         :level="R0Level"
-        name="Wood"
       />
       <PlanetRessource
         :ressource="1"
@@ -20,7 +19,6 @@
         :storage="R1Storage"
         :storageLevel="R1StorageLevel"
         :level="R1Level"
-        name="Metal"
       />
       <PlanetRessource
         :ressource="2"
@@ -30,7 +28,6 @@
         :storage="R2Storage"
         :storageLevel="R2StorageLevel"
         :level="R2Level"
-        name="Crystal"
       />
     </div>
   </div>

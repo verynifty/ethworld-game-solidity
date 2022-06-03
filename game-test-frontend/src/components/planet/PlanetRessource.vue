@@ -99,12 +99,12 @@
       >
         <div class="p-6 relative">
           <h2 class="text-lg leading-6 font-medium text-gray-900">
-            {{ name }} Storage level {{ storageLevel }}
+            {{ ressources[ressource].name }}  Storage level {{ storageLevel }}
           </h2>
          <div class="absolute right-6 top-6 bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded ">level {{ storageLevel }}</div>
 
           <p class="mt-4 text-sm text-gray-500">
-            You are currently mining {{ perHour }} {{ name }} per hour.
+            You are currently mining {{ perHour }} {{ ressources[ressource].name }}  per hour.
           </p>
           <p class="mt-8 text-center">
             <span class="text-4xl font-extrabold text-gray-900">{{
@@ -188,7 +188,6 @@ export default {
     level: Number,
     planet: String,
     productionPerSec: String,
-    name: String,
     ressource: Number,
     storage: String,
     storageLevel: Number,
