@@ -6,24 +6,37 @@ import './index.css'
 
 
 
-  let app = createApp(App)
+let app = createApp(App)
 
 
-  app.config.globalProperties.ressources = {
-    0: {
-      name: "Wood",
-      symbol: "🪵",
+app.config.globalProperties.ressources = [
+    {
+        name: "Wood",
+        symbol: "🪵",
+        tip: ""
     },
-    1: {
-      name: "Metal",
-      symbol: "🪨",
+    {
+        name: "Metal",
+        symbol: "🪨",
+        tip: ""
     },
-    2: {
-      name: "Crystal",
-      symbol: "💎",
+    {
+        name: "Crystal",
+        symbol: "💎",
+        tip: ""
     },
-  }
+]
 
+app.config.globalProperties.buildings = [
+    {
+        name: "Solar panle",
+        symbol: "☀️",
+    },
+    {
+        name: "energy laboratory",
+        symbol: "⚗️",
+    }
+]
 
 
 app.use(store).use(router).mount('#app')

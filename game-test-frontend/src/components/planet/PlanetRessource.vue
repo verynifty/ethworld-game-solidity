@@ -64,7 +64,7 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              <span class="text-sm text-gray-500">{{ cost0 }} Food</span>
+              <span class="text-sm text-gray-500">{{ cost0 }}  {{ ressources[0].name }}  {{ ressources[0].symbol }}</span>
             </li>
 
             <li class="flex space-x-3">
@@ -82,7 +82,25 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              <span class="text-sm text-gray-500">{{ cost1 }} Metal</span>
+              <span class="text-sm text-gray-500">{{ cost1 }}  {{ ressources[1].name }}  {{ ressources[1].symbol }}</span>
+            </li>
+
+             <li class="flex space-x-3">
+              <!-- Heroicon name: solid/check -->
+              <svg
+                class="flex-shrink-0 h-5 w-5 text-green-500"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              <span class="text-sm text-gray-500">100 Energy 🔋</span>
             </li>
           </ul>
         </div>
@@ -151,7 +169,7 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              <span class="text-sm text-gray-500">{{ scost0 }} Food</span>
+              <span class="text-sm text-gray-500">{{ scost0 }}  {{ ressources[0].name }}  {{ ressources[0].symbol }}</span>
             </li>
 
             <li class="flex space-x-3">
@@ -169,7 +187,7 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              <span class="text-sm text-gray-500">{{ scost1 }} Metal</span>
+              <span class="text-sm text-gray-500">{{ scost1 }}  {{ ressources[1].name }}  {{ ressources[1].symbol }}</span>
             </li>
           </ul>
         </div>
