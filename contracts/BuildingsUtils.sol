@@ -1,0 +1,5 @@
+contract BuildingUtils {
+
+    // for later
+
+}
