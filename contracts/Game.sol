@@ -23,14 +23,15 @@ contract Game is AccessControl {
         uint256 size;
         uint256 energyProduced;
         uint256 energyConsumed;
-       // mapping(uint256 => uint256) buildingLevel;
+        // mapping(uint256 => uint256) buildingLevel;
     }
 
     mapping(uint256 => Ressource) public ressources;
 
     mapping(uint256 => PlanetInfos) public planetInfos;
-    mapping(uint256 => mapping(uint256 => uint256[2])) public planetBuildings;
-
+    mapping(uint256 => mapping(uint256 => uint256)) public planetBuildings;
+    // 0: basic energy (solar plant)
+    // 1:
 
     // balance / production level / bonusmultiplier /lasttimeupdated / maxstorage / storagelevel
     mapping(uint256 => mapping(uint256 => uint256[6])) public planetRessources;
@@ -75,13 +76,7 @@ contract Game is AccessControl {
         planetNFT.mint(msg.sender, _id);
         console.log("UPDATEBL BEFORE/AFTER %s", _id);
 
-        planetInfos[_id] = PlanetInfos(
-            x,
-            y,
-            size,
-            100,
-            0
-        );
+        planetInfos[_id] = PlanetInfos(x, y, size, 100, 0);
         emit newPlanetMinted(_id);
     }
 
@@ -187,6 +182,43 @@ contract Game is AccessControl {
             r0 = 1000 * 2**(_level - 1) * 1 ether;
             r1 = 1000 * 2**(_level - 1) * 1 ether;
         }
+    }
+
+    function getBuildingCost(uint256 _building, uint256 _level)
+        public
+        pure
+        returns (
+            uint256 r0,
+            uint256 r1,
+            uint256 r2,
+            uint256 energy
+        )
+    {
+        if (_building == 0) // energy plant
+        {
+            r0 = (75 * 3**_level) / 2**_level;
+            r1 = (30 * 3**_level) / 2**_level;
+        } else if (_building == 1) {}
+    }
+
+    function makeBuilding(uint256 _planet, uint256 _building) public {
+        uint256 currentLevel = planetBuildings[_planet][_building];
+        uint256 r0;
+        uint256 r1;
+        uint256 r2;
+        uint256 energy;
+        (r0, r1, r2, energy) = getBuildingCost(_building, currentLevel + 1);
+        if (r0 > 0) {
+            _useRessource(_planet, 0, r0);
+        }
+        if (r1 > 0) {
+            _useRessource(_planet, 1, r1);
+        }
+        if (r2 > 0) {
+            _useRessource(_planet, 2, r2);
+        }
+        planetInfos[_planet].energyConsumed += energy;
+        planetBuildings[_planet][_building] = currentLevel + 1;
     }
 
     function upgradeStorage(uint256 _planet, uint256 _ressource) public {
