@@ -29,7 +29,7 @@ app.config.globalProperties.ressources = [
 
 app.config.globalProperties.buildings = [
     {
-        name: "Solar panle",
+        name: "Solar panel",
         symbol: "☀️",
     },
     {

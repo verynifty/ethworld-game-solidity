@@ -25,7 +25,7 @@ GameLib.prototype.getPlayerPlanets = async function () {
 
 }
 
-GameLib.prototype.getPlanetInfos = async function(id) {
+GameLib.prototype.getPlanetInfos = async function (id) {
     // console.log("INFOS FROM", id)
     let infos = await this.GameContract.getPlanetInfos(id);
     return infos;
@@ -66,7 +66,7 @@ GameLib.prototype.getPlanetID = async function (x, y) {
     let encodedHashNumber = ethers.BigNumber.from(encodedHash);
     //console.log(x, y, encodedHashNumber.toString())
     await this.getPlanetIDFromContract(x, y)
-    return(encodedHashNumber.toString())
+    return (encodedHashNumber.toString())
 }
 
 GameLib.prototype.isValidPlanet = async function (x, y, size) {
@@ -86,28 +86,38 @@ GameLib.prototype.getGameConfig = async function () {
     this.DIFFICULTY = (await this.GameContract.DIFFICULTY()).toNumber()
     this.MAX_PLANET_SIZE = (await this.GameContract.MAX_PLANET_SIZE()).toNumber()
     this.MapUtilsContract = (new ethers.Contract((await this.GameContract.mapUtils()), MapUtilsABI, this.provider.getSigner()))
-
 }
 
-GameLib.prototype.registerPlanet = async function(x, y, size) {
+GameLib.prototype.getPlayerPlanets = async function (p) {
+    let res = []
+    let planets = await this.PlanetContract.balanceOf(p);
+    planets = planets.toNumber();
+    for (let index = 0; index < planets; index++) {
+        const element = await this.PlanetContract.tokenOfOwnerByIndex(p, index);
+        res.push(element.toString())
+    }
+    return res;
+}
+
+GameLib.prototype.registerPlanet = async function (x, y, size) {
     let tx = await this.GameContract.newPlanet(x, y, size);
 }
 
-GameLib.prototype.upgradeRessource = async function(planet, ressource) {
+GameLib.prototype.upgradeRessource = async function (planet, ressource) {
     let tx = await this.GameContract.upgradeRessource(planet, ressource);
 }
 
-GameLib.prototype.getUpgradeCost = async function(ressource, level) {
+GameLib.prototype.getUpgradeCost = async function (ressource, level) {
     let res = await this.GameContract.getUpgradeCost(ressource, level);
     return res;
 }
 
-GameLib.prototype.getUpgradeStorageCost = async function(ressource, level) {
+GameLib.prototype.getUpgradeStorageCost = async function (ressource, level) {
     let res = await this.GameContract.getUpgradeStorageCost(ressource, level);
     return res;
 }
 
-GameLib.prototype.upgradeStorage = async function(planet, ressource) {
+GameLib.prototype.upgradeStorage = async function (planet, ressource) {
     let tx = await this.GameContract.upgradeStorage(planet, ressource);
 }
 

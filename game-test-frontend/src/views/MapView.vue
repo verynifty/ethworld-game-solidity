@@ -1,9 +1,11 @@
 <template>
-  <div class="grid grid-cols-6">
-    <div class="map col-span-6">
-      <div id="map"></div>
+  <div>
+    <PlanetList :address="account" />
+    <div class="grid grid-cols-6">
+      <div class="map col-span-6">
+        <div id="map"></div>
+      </div>
     </div>
-	    </div>
 
     <div class="col-span-2">
       <div v-if="selectedx != null">
@@ -22,7 +24,8 @@
         >
           Settle on planet
         </button>
-		<PlanetView :x="selectedx" :y="selectedy"/>
+        <PlanetView :x="selectedx" :y="selectedy" />
+      </div>
     </div>
   </div>
 </template>
@@ -31,7 +34,8 @@
 // @ is an alias to /src
 import SimpleGraticule from "leaflet-simple-graticule";
 
-import PlanetView from '@/components/planet/PlanetView.vue'
+import PlanetView from "@/components/planet/PlanetView.vue";
+import PlanetList from "@/components/planet/PlanetList.vue";
 
 var L = require("leaflet");
 
@@ -41,9 +45,10 @@ var store = require("store");
 
 export default {
   name: "MapView",
-  components: {PlanetView},
+  components: { PlanetView, PlanetList },
   data() {
     return {
+      loaded: false,
       map: null,
       miningx: 10,
       miningy: 10,
@@ -53,47 +58,45 @@ export default {
     };
   },
   mounted: async function () {
-    var map = L.map("map", {
-      crs: L.CRS.Simple,
-      minZoom: -80,
-    });
-
-    var bounds = [
-      [10, 10],
-      [50000000000000000, 5000000000000000],
-    ];
-
-    L.LatLng.prototype.distanceTo = function (currentPostion) {
-      var dx = currentPostion.lng - this.lng;
-      var dy = currentPostion.lat - this.lat;
-      return Math.sqrt(dx * dx + dy * dy);
-    };
-    map.setView([70, 120], 1);
-    /*
-    new SimpleGraticule({
-      interval: 500,
-      showOriginLabel: true,
-      redraw: "moveend",
-      zoomIntervals: [
-        { start: 0, end: 3, interval: 50 },
-        { start: 4, end: 5, interval: 5 },
-        { start: 6, end: 20, interval: 1 },
-      ],
-    }).addTo(map);
-	*/
-    this.map = map;
-    console.log(this.$store.state);
-    // Load already mined data
-    let ctx = this;
-    store.each(function (value, key) {
-      // console.log(key, "==", value);
-      if (value.type != null) {
-        ctx.addPlanet(value.x, value.y, value.size);
-      }
-    });
-    this.mine();
+    this.init()
   },
   methods: {
+    init: async function () {
+      console.log("&&&&&& INIT")
+      if (this.loaded || this.account == null) {
+        return
+      }
+            console.log("OK")
+
+      this.loaded = true;
+      var map = L.map("map", {
+        crs: L.CRS.Simple,
+        minZoom: -80,
+      });
+
+      var bounds = [
+        [10, 10],
+        [50000000000000000, 5000000000000000],
+      ];
+
+      L.LatLng.prototype.distanceTo = function (currentPostion) {
+        var dx = currentPostion.lng - this.lng;
+        var dy = currentPostion.lat - this.lat;
+        return Math.sqrt(dx * dx + dy * dy);
+      };
+      map.setView([70, 120], 1);
+      this.map = map;
+      console.log(this.$store.state);
+      // Load already mined data
+      let ctx = this;
+      store.each(function (value, key) {
+        // console.log(key, "==", value);
+        if (value.type != null) {
+          ctx.addPlanet(value.x, value.y, value.size);
+        }
+      });
+      this.mine();
+    },
     selectPlanet: async function (x, y) {
       this.selectedx = x;
       this.selectedy = y;
@@ -117,7 +120,7 @@ export default {
         while (startx <= x + radius) {
           starty = y - radius;
           while (starty <= y + radius) {
-            console.log("POS", startx, starty, x, y, x + radius, y + radius);
+            // console.log("POS", startx, starty, x, y, x + radius, y + radius);
             if (
               store.get(startx + "_" + starty) == null &&
               startx >= 0 &&
@@ -203,6 +206,16 @@ export default {
       this.$store.state.gameLib.registerPlanet(planet.x, planet.y, planet.size);
     },
   },
+  computed: {
+    account: function () {
+      return this.$store.state.account;
+    },
+  },
+  watch: {
+    account: function() {
+      this.init()
+    }
+  }
 };
 </script>
 
