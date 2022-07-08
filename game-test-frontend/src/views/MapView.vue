@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <PlanetList :address="account" />
+  <div >
+    <PlanetList v-if="account" :address="account" />
     <div class="grid grid-cols-6">
       <div class="map col-span-6">
         <div id="map"></div>
@@ -58,15 +58,15 @@ export default {
     };
   },
   mounted: async function () {
-    this.init()
+    this.init();
   },
   methods: {
     init: async function () {
-      console.log("&&&&&& INIT")
+      console.log("&&&&&& INIT");
       if (this.loaded || this.account == null) {
-        return
+        return;
       }
-            console.log("OK")
+      console.log("OK");
 
       this.loaded = true;
       var map = L.map("map", {
@@ -212,10 +212,10 @@ export default {
     },
   },
   watch: {
-    account: function() {
-      this.init()
-    }
-  }
+    account: function () {
+      this.init();
+    },
+  },
 };
 </script>
 

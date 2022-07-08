@@ -34,8 +34,7 @@ export default createStore({
         if (infos == null) {
           throw 'force_disconnect'
         } else {
-          state.account = infos.account;
-          state.login_secret = infos.login_secret;
+         
           /*
           w3.on("block", (blockNum) => {
             console.log("BLOOOCK", blockNum + ": " + new Date(Date.now()))
@@ -51,7 +50,8 @@ export default createStore({
             planet: "0x6DE579744CC806a838648371838bdCDF3a95CF11"
           })
           */
-
+          state.account = infos.account;
+          state.login_secret = infos.login_secret;
         }
       } catch (error) {
         // console.log(error)
