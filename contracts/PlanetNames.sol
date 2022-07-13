@@ -112,7 +112,9 @@ contract PlanetNames {
         "debe",
         "dran",
         "bar",
-        "bo"
+        "bo",
+        "lo",
+        "sa"
     ]
     string[] public fourth = [
         "Kingdom",
@@ -125,4 +127,15 @@ contract PlanetNames {
         "moon",
         "sun"
     ];
+
+    string[] public fith = [
+        "I",
+        "1",
+        "II",
+        "III",
+        "2",
+        "3",
+        "the second",
+        "the first"
+    ]
 }
