@@ -29,7 +29,16 @@ contract PlanetNames {
         "Icy",
         "Ministry of",
         "Iced",
-        "Remainings of"
+        "Remainings of",
+        "The",
+        "Fren",
+        "Elon",
+        "South",
+        "North",
+        "East",
+        "West",
+        "Upper",
+        "Lower"
     ];
     
     string[] public second = [
@@ -51,7 +60,22 @@ contract PlanetNames {
         "O",
         "E",
         "Y",
-        "Bel"
+        "Bel",
+        "Mu",
+        "Ro",
+        "Shi",
+        "Mi",
+        "Lee",
+        "Oo",
+        "Aloa",
+        "Ma",
+        "Sha",
+        "To",
+        "So",
+        "Ju",
+        "Ada",
+        "Bra",
+        "Du"
     ];
 
     string[] public third = [
@@ -63,6 +87,7 @@ contract PlanetNames {
         "ko",
         "tua",
         "many",
+        "mania",
         "bo",
         "thua",
         "ce",
@@ -71,6 +96,7 @@ contract PlanetNames {
         "rusa",
         "quein",
         "keeling",
+        "sk",
         "tish",
         "co",
         "rica",
@@ -95,6 +121,8 @@ contract PlanetNames {
         "of the montains",
         "of the seas",
         "lands",
-        "peak"
+        "peak",
+        "moon",
+        "sun"
     ];
 }
