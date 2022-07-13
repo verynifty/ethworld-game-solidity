@@ -1,5 +1,14 @@
 <template>
-  <div>Planets</div>
+  <div>
+    Planets:
+    <ul>
+      <li v-for="planet in planets" v-bind:key="planet.id">
+        <p @click="clickPlanet(planet)">
+          {{ planet.id }} _ {{ planet.x }} / {{ planet.y }}
+        </p>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -14,12 +23,23 @@ export default {
       planets: [],
     };
   },
-  methods: {},
+  methods: {
+    clickPlanet: function (planet) {
+      console.log("planetSelected", planet.x, planet.y);
+      this.$emit("planetSelected", planet.x, planet.y);
+    },
+  },
   computed: {},
   created: async function () {
-    this.planets = await this.$store.state.gameLib.getPlayerPlanets(
-      this.address
-    );
+    let ps = await this.$store.state.gameLib.getPlayerPlanets(this.address);
+    for (const p of ps) {
+      let pos = await this.$store.state.gameLib.getPlanetPosition(p);
+      this.planets.push({
+        id: p,
+        x: pos.x,
+        y: pos.y,
+      });
+    }
     console.log(this.planets);
   },
   beforeDestroy() {},

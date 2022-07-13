@@ -1,6 +1,6 @@
 <template>
   <div >
-    <PlanetList v-if="account" :address="account" />
+    <PlanetList v-if="account" :address="account" @planetSelected="selectPlanet" />
     <div class="grid grid-cols-6">
       <div class="map col-span-6">
         <div id="map"></div>
@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     init: async function () {
-      console.log("&&&&&& INIT");
+      // console.log("&&&&&& INIT");
       if (this.loaded || this.account == null) {
         return;
       }

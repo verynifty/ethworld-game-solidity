@@ -21,12 +21,17 @@ function GameLib(provider, addresses) {
     this.getGameConfig()
 }
 
-GameLib.prototype.getPlayerPlanets = async function () {
-
+GameLib.prototype.getPlanetPosition = async function (id) {
+    let pos = await this.GameContract.getPlanetPosition(id);
+    return (
+        {
+            x: pos.x.toString(),
+            y: pos.y.toString()
+        }
+    )
 }
 
 GameLib.prototype.getPlanetInfos = async function (id) {
-    // console.log("INFOS FROM", id)
     let infos = await this.GameContract.getPlanetInfos(id);
     return infos;
 }

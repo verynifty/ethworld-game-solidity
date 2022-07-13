@@ -97,6 +97,11 @@ contract Game is AccessControl {
         );
     }
 
+    function getPlanetPosition(uint256 _id) public view returns (uint256 x, uint256 y) {
+        x = planetInfos[_id].x;
+        y = planetInfos[_id].y;
+    }
+
     function getPlanetInfos(uint256 _planet)
         public
         view
