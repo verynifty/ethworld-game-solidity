@@ -38,11 +38,13 @@ contract PlanetNames {
         "East",
         "West",
         "Upper",
-        "Lower"
+        "Lower",
+        "Distinct"
     ];
     
     string[] public second = [
         "Name",
+        "Nifty",
         "Kush",
         "Pol",
         "Ger",
@@ -50,6 +52,7 @@ contract PlanetNames {
         "Pleb",
         "Chad",
         "Ja",
+        "Jupi",
         "Costa",
         "Su",
         "Zhu",
@@ -75,7 +78,11 @@ contract PlanetNames {
         "Ju",
         "Ada",
         "Bra",
-        "Du"
+        "Du",
+        "Mo",
+        "Ala",
+        "Gu",
+        "Vi"
     ];
 
     string[] public third = [
@@ -86,6 +93,7 @@ contract PlanetNames {
         "pro",
         "ko",
         "tua",
+        "ktor",
         "many",
         "mania",
         "bo",
@@ -94,6 +102,7 @@ contract PlanetNames {
         "Gium",
         "snia",
         "rusa",
+        "khee",
         "quein",
         "keeling",
         "sk",
