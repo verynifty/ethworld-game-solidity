@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract PlanetNames {
+contract NameUtils {
 
     string[] public first = [
         "Friso",
@@ -143,7 +143,8 @@ contract PlanetNames {
         "sa",
         "zonia",
         "stu"
-    ]
+    ];
+
     string[] public fourth = [
         "Kingdom",
         "Democracy",
@@ -156,7 +157,7 @@ contract PlanetNames {
         "sun"
     ];
 
-    string[] public fith = [
+    string[] public fifth = [
         "I",
         "1",
         "II",
@@ -165,5 +166,16 @@ contract PlanetNames {
         "3",
         "the second",
         "the first"
-    ]
+    ];
+
+    function getName(uint256 _seed) public view returns (
+        string memory name
+    ) {
+        uint256 a = uint256(sha256(abi.encode(_seed, 1))) % first.length;
+        uint256 b = uint256(sha256(abi.encode(_seed, 2))) % second.length;
+        uint256 c = uint256(sha256(abi.encode(_seed, 3))) % third.length;
+        uint256 d = uint256(sha256(abi.encode(_seed, 4))) % fourth.length;
+        uint256 e = uint256(sha256(abi.encode(_seed, 5))) % fifth.length;
+         name = string(abi.encodePacked(first[a], second[b], third[c], fourth[d], fifth[e]));
+    }
 }

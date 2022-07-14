@@ -8,6 +8,7 @@ import "./BaseERC20Ressource.sol";
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "./Planet.sol";
 import "./MapUtils.sol";
+import "./NameUtils.sol";
 
 contract Game is AccessControl {
     struct Ressource {
@@ -33,7 +34,7 @@ contract Game is AccessControl {
     // 0: basic energy (solar plant)
     // 1: research laboratory
     // 2 energy laboratory
-    // 3: 
+    // 3:
 
     // balance / production level / bonusmultiplier /lasttimeupdated / maxstorage / storagelevel
     mapping(uint256 => mapping(uint256 => uint256[6])) public planetRessources;
@@ -49,11 +50,17 @@ contract Game is AccessControl {
 
     Planet public planetNFT;
     MapUtils public mapUtils;
+    NameUtils public nameUtils;
 
-    constructor(address _planetNFT, address _mapUtils) {
+    constructor(
+        address _planetNFT,
+        address _mapUtils,
+        address _nameUtils
+    ) {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
         planetNFT = Planet(_planetNFT);
         mapUtils = MapUtils(_mapUtils);
+        nameUtils = NameUtils(_nameUtils);
     }
 
     function newPlanet(
@@ -97,7 +104,11 @@ contract Game is AccessControl {
         );
     }
 
-    function getPlanetPosition(uint256 _id) public view returns (uint256 x, uint256 y) {
+    function getPlanetPosition(uint256 _id)
+        public
+        view
+        returns (uint256 x, uint256 y)
+    {
         x = planetInfos[_id].x;
         y = planetInfos[_id].y;
     }
@@ -199,9 +210,7 @@ contract Game is AccessControl {
         {
             r0 = (75 * 3**_level) / 2**_level;
             r1 = (30 * 3**_level) / 2**_level;
-        } else if (_building == 1) {
-
-        }
+        } else if (_building == 1) {}
     }
 
     function makeBuilding(uint256 _planet, uint256 _building) public {
@@ -270,7 +279,6 @@ contract Game is AccessControl {
                 10**16;
         }
     }
-
 
     function upgradeRessource(uint256 _planet, uint256 _ressource) public {
         uint256 r0;

@@ -1,11 +1,13 @@
 let GameArtifact = require('../artifacts/contracts/Game.sol/Game.json')
 let PlanetArtifact = require('../artifacts/contracts/Planet.sol/Planet.json')
 let MapUtilsArtifact = require('../artifacts/contracts/MapUtils.sol/MapUtils.json')
+let NameUtilsArtifact = require('../artifacts/contracts/NameUtils.sol/NameUtils.json')
 
 const ethers = require('ethers')
 const GameABI = GameArtifact.abi;
 const PlanetABI = PlanetArtifact.abi;
 const MapUtilsABI = MapUtilsArtifact.abi
+const NameUtilsABI = NameUtilsArtifact.abi
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -91,6 +93,7 @@ GameLib.prototype.getGameConfig = async function () {
     this.DIFFICULTY = (await this.GameContract.DIFFICULTY()).toNumber()
     this.MAX_PLANET_SIZE = (await this.GameContract.MAX_PLANET_SIZE()).toNumber()
     this.MapUtilsContract = (new ethers.Contract((await this.GameContract.mapUtils()), MapUtilsABI, this.provider.getSigner()))
+    this.NameUtilsContract = (new ethers.Contract((await this.GameContract.nameUtils()), NameUtilsABI, this.provider.getSigner()))
 }
 
 GameLib.prototype.getPlayerPlanets = async function (p) {

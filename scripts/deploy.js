@@ -52,13 +52,16 @@ async function main() {
     Planet = await PlanetContract.deploy()
     await Planet.deployed()
 
+    const NameUtilsContract = await ethers.getContractFactory("NameUtils");
+    NameUtils = await NameUtilsContract.deploy();
+    await NameUtils.deployed()
 
     const MapUtilsContract = await ethers.getContractFactory("MapUtils");
     MapUtils = await MapUtilsContract.deploy();
     await MapUtils.deployed()
 
     const GameContract = await ethers.getContractFactory("Game");
-    Game = await GameContract.deploy(Planet.address, MapUtils.address);
+    Game = await GameContract.deploy(Planet.address, MapUtils.address, NameUtils.address);
     await Game.deployed()
 
 
