@@ -7,6 +7,12 @@ import "./EWMapDuel.sol";
 
 contract EWEngine {
     
+    struct MapTile {
+        uint256 perHour;
+        uint256 balance;
+        uint256 player;
+    }
+
     struct Tile {
         uint256 perHour;
         uint256 balance;
@@ -38,11 +44,21 @@ contract EWEngine {
 
     function newGame(address[] memory _players, uint256 _map) public {
         games[nbGames] = Game(block.timestamp, _map, _players);
+        for (uint256 index; index < maps[games[nbGames].map].getSize(); index++) {
+            
+        }
         nbGames++;
     }
 
-    function getTile(uint256 x, uint256 y) public view returns (string memory) {
-        return "";
+    function getTile(uint256 _game, uint256 _x, uint256 _y) public view returns (
+        address owner,
+        uint256 units,
+        uint256 perHour,
+        uint256 balance,
+        uint256 lastUpdate
+    ) {
+       // MapTile memory mtile = maps[games[_game].map];
+        
     }
 
 }
