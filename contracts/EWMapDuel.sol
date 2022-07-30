@@ -16,11 +16,10 @@ contract EWMapDuel {
     */
 
     struct MapDef {
-        uint256 x;
-        uint256 y;
         uint256 perHour;
         uint256 balance;
         uint256 player;
+        uint256 position;
     }
 
     string public name = "Duel";
@@ -29,10 +28,10 @@ contract EWMapDuel {
     uint256 public mapDefSize;
     uint256 public aps = 1e18; // Actions per seconds
 
-    MapDef[] public map;
+    MapDef[] public defs;
 
     constructor() {
-        map.push(MapDef(ONE_PER_SEC, 1, 0, 0, 0));
+        defs.push(MapDef(ONE_PER_SEC, 1, 0, getPos(0, 0)));
         /*
         map[getPos(4, 4)] = MapTile(ONE_PER_SEC, 2, 0);
 
@@ -40,6 +39,14 @@ contract EWMapDuel {
         map[getPos(4, 0)] = MapTile(ONE_PER_SEC, 0, 10);
         map[getPos(0, 4)] = MapTile(ONE_PER_SEC, 0, 10);
         */
+    }
+
+    function getDef(uint256 _position)
+        public
+        view
+        returns (MapDef memory def)
+    {
+       def = defs[_position];
     }
 
     function getPos(uint256 x, uint256 y)
@@ -55,7 +62,7 @@ contract EWMapDuel {
         view
         returns (uint256 )
     {
-       return map.length;
+       return defs.length;
     }
 
 

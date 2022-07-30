@@ -6,12 +6,6 @@ import "hardhat/console.sol";
 import "./EWMapDuel.sol";
 
 contract EWEngine {
-    
-    struct MapTile {
-        uint256 perHour;
-        uint256 balance;
-        uint256 player;
-    }
 
     struct Tile {
         uint256 perHour;
@@ -44,8 +38,10 @@ contract EWEngine {
 
     function newGame(address[] memory _players, uint256 _map) public {
         games[nbGames] = Game(block.timestamp, _map, _players);
-        for (uint256 index; index < maps[games[nbGames].map].getSize(); index++) {
-            
+        EWMapDuel map = maps[games[nbGames].map];
+        for (uint256 index; index < map.getSize(); index++) {
+            EWMapDuel.MapDef memory def = map.getDef(index);
+            gamesMap[nbGames][def.position] = Tile(def.perHour, def.balance, def.player, block.timestamp);
         }
         nbGames++;
     }
