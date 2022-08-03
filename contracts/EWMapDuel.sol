@@ -25,6 +25,7 @@ contract EWMapDuel {
     string public name = "Duel";
     uint256 public players = 2;
     uint256 public width = 5;
+    uint256 public height = 5;
     uint256 public mapDefSize;
     uint256 public aps = 1e18; // Actions per seconds
 
