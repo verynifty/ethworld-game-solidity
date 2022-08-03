@@ -75,7 +75,6 @@ contract EWEngine {
         view
         returns (
             uint256 player,
-            uint256 units,
             uint256 perHour,
             uint256 balance,
             uint256 lastUpdate
@@ -83,9 +82,28 @@ contract EWEngine {
     {
         Tile memory tile = gamesMap[_game][_pos];
         player = tile.player;
-        units = tile.balance;
+        balance = getTileBalance(_game, _pos);
         perHour = tile.perHour;
         lastUpdate = tile.lastUpdate;
+    }
+
+    function getGame(uint256 _game)
+        public
+        view
+        returns (
+            uint256 startTime,
+            uint256 map,
+            address[] memory players,
+            uint256 width,
+            uint256 height
+        )
+    {
+        Game memory game = games[_game];
+        startTime = game.startTime;
+        map = game.map;
+        players = game.players;
+        width = game.width;
+        height = game.height;
     }
 
     function move(
