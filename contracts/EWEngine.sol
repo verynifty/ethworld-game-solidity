@@ -61,18 +61,19 @@ contract EWEngine {
         Tile storage from = gamesMap[_game][_from];
         require(msg.sender == games[_game].players[from.player], "Can only move own army.");
         Tile storage to = gamesMap[_game][_to];
-        from.balance = from.balance - _amount;
+        uint256 effectiveAmont = from.balance < _amount ? from.balance: _amount;
+        from.balance = from.balance - effectiveAmont;
         if (from.player == to.player) {
             // it's just a transfer from player to player
-            to.balance = to.balance + _amount;
+            to.balance = to.balance + effectiveAmont;
         } else {
             // here is an attack
-            if (from.balance > to.balance) {
+            if (effectiveAmont > to.balance) {
                 // just removing some units
-                to.balance = to.balance - _amount;
+                to.balance = to.balance - effectiveAmont;
             } else {
                 // conquering the tile
-                to.balance = _amount - to.balance;
+                to.balance = effectiveAmont - to.balance;
                 to.player = from.player;
             }
         }
