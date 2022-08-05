@@ -49,10 +49,14 @@
           "
         >
           <router-link class="mr-5 hover:text-white" to="/">Main</router-link>
-          <router-link class="mr-5 hover:text-white" to="/map">Map</router-link>
+          <router-link class="mr-5 hover:text-white" to="/games"
+            >Games</router-link
+          >
+
+          <!-- <router-link class="mr-5 hover:text-white" to="/map">Map</router-link>
           <router-link class="mr-5 hover:text-white" to="/about"
             >About</router-link
-          >
+          > -->
         </nav>
         <button
           class="
@@ -82,18 +86,17 @@
 <script>
 import ConnectButton from "@/components/web3/ConnectButton.vue";
 
-
 export default {
   name: "App",
   components: {
     ConnectButton,
   },
-  created: function() {
-    console.log("CREATYED")
+  created: function () {
+    console.log("CREATYED");
     this.$store.dispatch("connect", {
-      tryFromCache: true
+      tryFromCache: true,
     });
-  }
+  },
 };
 </script>
 

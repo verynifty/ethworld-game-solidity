@@ -3,6 +3,7 @@ import { providers, ethers } from "ethers";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import GameUtils from "../../../js-lib/index"
+import Engine from "../../../js-lib/ew"
 
 
 let providerOptions = {
@@ -40,10 +41,10 @@ export default createStore({
             console.log("BLOOOCK", blockNum + ": " + new Date(Date.now()))
           })
           */
-          state.gameLib = new GameUtils(w3, { // this re addresses for local hardhat testnet
-            game: "0x0165878A594ca255338adfa4d48449f69242Eb8F",
-            planet: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+          state.engine = new Engine(w3, { // this re addresses for local hardhat testnet
+            engine: "0x6b2e5DFAb86020d4C22790C4Fc7c7b4b208809F4"
           })
+
           /*
           state.gameLib = new GameUtils(w3,{ // this re addresses for local hardhat testnet
             game: "0xBF67c8CD9e86cfb89f44dD30DE49CE221da47258",

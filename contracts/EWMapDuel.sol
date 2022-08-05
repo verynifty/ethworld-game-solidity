@@ -33,6 +33,8 @@ contract EWMapDuel {
 
     constructor() {
         defs.push(MapDef(ONE_PER_SEC, 1, 0, getPos(0, 0)));
+        defs.push(MapDef(ONE_PER_SEC, 1, 2, getPos(5, 5)));
+
         /*
         map[getPos(4, 4)] = MapTile(ONE_PER_SEC, 2, 0);
 
